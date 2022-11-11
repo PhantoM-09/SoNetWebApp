@@ -14,7 +14,7 @@ namespace Models
     public class UFile
     {
         [Column("FILEID")]
-        public string FileId { get; set; }
+        public int FileId { get; set; }
 
         [Column("FILENAME")]
         public string FileName { get; set; }

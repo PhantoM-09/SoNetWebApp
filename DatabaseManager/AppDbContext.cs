@@ -6,6 +6,13 @@ namespace DatabaseManager
     public class AppDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Block> Blocks { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<UFile> UFiles { get; set; }
+        public DbSet<Friend> Friends { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) 
             : base(options)
@@ -21,7 +28,7 @@ namespace DatabaseManager
             modelBuilder.Entity<Post>().HasKey(p => p.PostId);
             modelBuilder.Entity<Comment>().HasKey(c => c.CommentId);
             modelBuilder.Entity<Message>().HasKey(m => m.MessageId);
-            modelBuilder.Entity<UFile>().HasKey(f=>f.FileId);
+            modelBuilder.Entity<UFile>().HasKey(uf => uf.FileId);
             modelBuilder.Entity<Friend>().HasKey(fr => new { fr.UserId, fr.FriendId });
 
             modelBuilder.Entity<Address>().HasMany(ua => ua.Users).WithOne(u => u.Address).HasForeignKey(u => u.AddressId).OnDelete(DeleteBehavior.ClientSetNull);
@@ -30,7 +37,7 @@ namespace DatabaseManager
             modelBuilder.Entity<User>().HasMany(u => u.Comments).WithOne(c => c.User).HasForeignKey(c=>c.UserId).OnDelete(DeleteBehavior.ClientCascade);
             modelBuilder.Entity<User>().HasMany(u => u.MessagesSend).WithOne(m => m.UserSend).HasForeignKey(m => m.UserSenderId).OnDelete(DeleteBehavior.ClientCascade);
             modelBuilder.Entity<User>().HasMany(u => u.MessagesReceive).WithOne(m => m.UserReceive).HasForeignKey(m => m.UserReceiverId).OnDelete(DeleteBehavior.ClientCascade); //ПРАВИТЬ ЧТОБЫ НЕ УДАЛЯЛИСЬ ПРИ УДАЛЕНИИ ПОЛЬЗОВАТЕЛЯ
-            modelBuilder.Entity<User>().HasMany(u => u.Files).WithOne(f => f.User).HasForeignKey(f => f.UserId).OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<User>().HasMany(u => u.Files).WithOne(uf => uf.User).HasForeignKey(uf => uf.UserId).OnDelete(DeleteBehavior.ClientCascade);
             modelBuilder.Entity<User>().HasMany(u => u.RelationSend).WithOne(fr => fr.User).HasForeignKey(fr => fr.UserId).OnDelete(DeleteBehavior.ClientCascade);               //Спорная
             modelBuilder.Entity<User>().HasMany(u => u.RelationReceive).WithOne(fr => fr.FriendUser).HasForeignKey(fr => fr.FriendId).OnDelete(DeleteBehavior.ClientCascade);    //ситуация
             modelBuilder.Entity<Post>().HasMany(p => p.Comments).WithOne(c => c.Post).HasForeignKey(c => c.PostId).OnDelete(DeleteBehavior.ClientCascade);
