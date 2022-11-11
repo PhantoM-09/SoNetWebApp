@@ -10,17 +10,20 @@ using System.Threading.Tasks;
 namespace Models
 {
     [Table("STRGFILE")]
-    [Index(nameof(FileDrive), IsUnique = true)]
+    [Index(nameof(UFileDrive), IsUnique = true)]
     public class UFile
     {
         [Column("FILEID")]
-        public int FileId { get; set; }
+        public int UFileId { get; set; }
 
         [Column("FILENAME")]
-        public string FileName { get; set; }
+        public string UFileName { get; set; }
 
         [Column("FILEDRIVE")]
-        public string FileDrive { get; set; }
+        public string UFileDrive { get; set; }
+
+        [Column("FILETYPE")]
+        public string UFileType{ get; set; }
 
         [Column("USERID")]
         public int UserId { get; set; }

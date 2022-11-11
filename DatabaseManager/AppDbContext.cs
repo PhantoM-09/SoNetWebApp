@@ -28,7 +28,7 @@ namespace DatabaseManager
             modelBuilder.Entity<Post>().HasKey(p => p.PostId);
             modelBuilder.Entity<Comment>().HasKey(c => c.CommentId);
             modelBuilder.Entity<Message>().HasKey(m => m.MessageId);
-            modelBuilder.Entity<UFile>().HasKey(uf => uf.FileId);
+            modelBuilder.Entity<UFile>().HasKey(uf => uf.UFileId);
             modelBuilder.Entity<Friend>().HasKey(fr => new { fr.UserId, fr.FriendId });
 
             modelBuilder.Entity<Address>().HasMany(ua => ua.Users).WithOne(u => u.Address).HasForeignKey(u => u.AddressId).OnDelete(DeleteBehavior.ClientSetNull);

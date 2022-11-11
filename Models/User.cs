@@ -44,6 +44,9 @@ namespace Models
         [Column("USERONLINEDATE")]
         public DateTime UserOnlineDate { get; set; }
 
+        [Column("USERTYPE")]
+        public int UserType { get; set; }
+
         [Column("BLOCKID")]
         public int BlockId { get; set; } = 0;
 
