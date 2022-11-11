@@ -11,18 +11,22 @@ namespace Models
     [Table("STRGPOST")]
     public class Post
     {
-        [Key]
         [Column("POSTID")]
-        public int Id { get; set; }
+        public int PostId { get; set; }
 
-        [Column("POSTTEXT", TypeName ="nvarchar(500)")]
-        public string Text { get; set; }
+        [Column("POSTTEXT")]
+        public string PostText { get; set; }
 
-        [Column("POSTPUBLICATION", TypeName ="datetime")]
-        public DateTime Publication { get; set; }
+        [Column("POSTPUBLICATION")]
+        public DateTime PostPublication { get; set; }
 
-        [Column("POSTLIKE")]
-        public int Like { get; set; }
-        //Внешние
+        [Column("POSTLIKEAMOUNT")]
+        public int PostLikeAmount { get; set; }
+
+        [Column("USERID")]
+        public int UserId { get; set; }
+
+        public virtual User User { get; set; } 
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

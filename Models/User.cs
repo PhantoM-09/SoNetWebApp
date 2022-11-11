@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,36 +11,50 @@ using System.Threading.Tasks;
 namespace Models
 {
     [Table("RUSER")]
+    [Index(nameof(UserEmail), IsUnique = true)]
     public class User
     {
-        [Key]
         [Column("USERID")]
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
-        [Column("USEREMAIL", TypeName = "nvarchar(50)")]
-        public string Email { get; set; }
+        [Column("USEREMAIL")]
+        public string UserEmail { get; set; }
 
-        [Column("USERPASSWORD", TypeName = "nvarchar(100)")]
-        public string Password { get; set; }
+        [Column("USERPASSWORD")]
+        public string UserPassword { get; set; }
 
-        [Column("USERLSTNAME", TypeName = "nvarchar(20)")]
-        public string LastName { get; set; }
+        [Column("USERLSTNAME")]
+        public string UserLastName { get; set; }
 
-        [Column("USERNAME", TypeName = "nvarchar(20)")]
-        public string Name { get; set; }
+        [Column("USERNAME")]
+        public string UserName { get; set; }
 
-        //?
-        [Column("USERSEX", TypeName = "nvarchar(6)")]
-        public string Sex { get; set; }
+        [Column("USERSEX")]
+        public string UserSex { get; set; }
 
-        [Column("USERBDAY", TypeName = "date")]
-        public DateTime BirthDay { get; set; }
+        [Column("USERBDAY")]
+        public DateTime UserBirthDay { get; set; }
 
-        [Column("USERISONLINE", TypeName = "bit")]
-        public bool IsOnline { get; set; }
+        [Column("ADDRESSID")]
+        public int AddressId { get; set; }
 
-        [Column("USERONLINEDATE", TypeName = "datetime")]
-        public DateTime OnlineDate { get; set; }
-        //Внешние
+        [Column("USERISONLINE")]
+        public bool UserIsOnline { get; set; }
+
+        [Column("USERONLINEDATE")]
+        public DateTime UserOnlineDate { get; set; }
+
+        [Column("BLOCKID")]
+        public int BlockId { get; set; } = 0;
+
+        public virtual Address Address { get; set; }
+        public virtual Block Block { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Message> MessagesSend { get; set; }
+        public virtual ICollection<Message> MessagesReceive { get; set; }
+        public virtual ICollection<UFile> Files { get; set; }
+        public virtual ICollection<Friend> RelationSend { get; set; }
+        public virtual ICollection<Friend> RelationReceive { get; set; }
     }
 }

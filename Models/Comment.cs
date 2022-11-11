@@ -11,16 +11,22 @@ namespace Models
     [Table("STRGCOMMENT")]
     public class Comment
     {
-        [Key]
         [Column("COMMENTID")]
-        public int Id { get; set; }
+        public int CommentId { get; set; }
 
-        [Column("COMMENTTEXT", TypeName = "nvarchar(1000)")]
-        public string Text { get; set; }
+        [Column("COMMENTTEXT")]
+        public string CommentText { get; set; }
 
-        [Column("COMMENTSEND", TypeName ="datetime")]
-        public DateTime Send { get; set; }
+        [Column("COMMENTSEND")]
+        public DateTime CommentSend { get; set; }
 
-        //Внешние
+        [Column("POSTID")]
+        public int PostId { get; set; }
+
+        [Column("USERID")]
+        public int UserId { get; set; }
+
+        public virtual Post Post { get; set; }
+        public virtual User User { get; set; }
     }
 }

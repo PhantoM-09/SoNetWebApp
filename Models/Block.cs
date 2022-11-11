@@ -9,21 +9,20 @@ using System.Threading.Tasks;
 namespace Models
 {
     [Table("JBLOCK")]
-    public class UserBlock
+    public class Block
     {
-        [Key]
         [Column("BLOCKID")]
-        public int Id { get; set; }
+        public int BlockId { get; set; }
 
-        [Column("BLOCKREASON", TypeName = "nvarchar(100)")]
+        [Column("BLOCKREASON")]
         public string BlockReason { get; set; }
 
-        [Column("BLOCKSTART", TypeName="datetime")]
+        [Column("BLOCKSTART")]
         public DateTime BLockStart { get; set; }
 
-        [Column("BLOCKEND", TypeName = "datetime")]
+        [Column("BLOCKEND")]
         public DateTime BLockEnd { get; set; }
 
-        //Внешние
+        public virtual ICollection<User> Users { get; set; }
     }
 }

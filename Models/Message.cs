@@ -11,14 +11,22 @@ namespace Models
     [Table("STRGMESSAGE")]
     public  class Message
     {
-        [Key]
         [Column("MESSAGEID")]
-        public int Id { get; set; }
+        public int MessageId { get; set; }
 
-        [Column("MESSAGETEXT", TypeName = "nvarchar(500)")]
-        public string Text { get; set; }
+        [Column("MESSAGETEXT")]
+        public string MessageText { get; set; }
 
-        [Column("MESSAGECREATE", TypeName = "datetime")]
-        public DateTime Create { get; set; }
+        [Column("MESSAGECREATE")]
+        public DateTime MessageCreate { get; set; }
+
+        [Column("USERSENDER")]
+        public int UserSenderId { get; set; }
+
+        [Column("USERRECEIVER")]
+        public int UserReceiverId { get; set; }
+
+        public virtual User UserSend { get; set; }
+        public virtual User UserReceive { get; set; }
     }
 }
