@@ -32,7 +32,7 @@ namespace DatabaseManager
             modelBuilder.Entity<Friend>().HasKey(fr => new { fr.UserId, fr.FriendId });
 
             modelBuilder.Entity<Address>().HasMany(ua => ua.Users).WithOne(u => u.Address).HasForeignKey(u => u.AddressId).OnDelete(DeleteBehavior.ClientSetNull);
-            modelBuilder.Entity<Block>().HasMany(b=>b.Users).WithOne(u => u.Block).HasForeignKey(u => u.BlockId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Block>().HasMany(b=>b.Users).WithOne(u => u.Block).HasForeignKey(u => u.BlockId).OnDelete(DeleteBehavior.ClientSetNull);
             modelBuilder.Entity<User>().HasMany(u => u.Posts).WithOne(p => p.User).HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.ClientCascade); //Не понятно
             modelBuilder.Entity<User>().HasMany(u => u.Comments).WithOne(c => c.User).HasForeignKey(c=>c.UserId).OnDelete(DeleteBehavior.ClientCascade);
             modelBuilder.Entity<User>().HasMany(u => u.MessagesSend).WithOne(m => m.UserSend).HasForeignKey(m => m.UserSenderId).OnDelete(DeleteBehavior.ClientCascade);
