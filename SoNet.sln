@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseManager", "DatabaseManager\DatabaseManager.csproj", "{0AE379F1-B4B4-4278-9F0F-69C1A0693485}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetReact", "AspNetReact\AspNetReact.csproj", "{7CB99092-551F-443C-9C9E-97BB511C6FA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiServer", "WebApiServer\WebApiServer.csproj", "{9B10F109-BBCD-412C-AF22-D8E21F03E02E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{0AE379F1-B4B4-4278-9F0F-69C1A0693485}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AE379F1-B4B4-4278-9F0F-69C1A0693485}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AE379F1-B4B4-4278-9F0F-69C1A0693485}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7CB99092-551F-443C-9C9E-97BB511C6FA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CB99092-551F-443C-9C9E-97BB511C6FA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CB99092-551F-443C-9C9E-97BB511C6FA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CB99092-551F-443C-9C9E-97BB511C6FA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B10F109-BBCD-412C-AF22-D8E21F03E02E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B10F109-BBCD-412C-AF22-D8E21F03E02E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B10F109-BBCD-412C-AF22-D8E21F03E02E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B10F109-BBCD-412C-AF22-D8E21F03E02E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
