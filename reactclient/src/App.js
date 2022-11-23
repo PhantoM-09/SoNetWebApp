@@ -103,6 +103,7 @@ class RegistrationForm extends React.Component{
             image: "",
         }
       }
+
     handleChange = event => {
         const{name, value} = event.target
         console.log(name + value)
@@ -321,8 +322,6 @@ class SecondStep extends React.Component{
 }
 
 class ThirdStep extends React.Component{
-
-
   constructor(props)
   {
     super(props)
@@ -332,20 +331,24 @@ class ThirdStep extends React.Component{
   }
 
   handleChangeFile = event => {
-    this.sendPicture(event.target.files[0]);
+    this.convertFileToImage(event.target.files[0])  
   }
 
-  handleChangeImage = event => {
-    this.setState({image: event.target.src})
+  convertFileToImage(file)
+  {
+    var reader = new FileReader();
+    reader.onload = function(event){
+      this.setState({image: event.target.result})
+    }.bind(this)
+
+    reader.readAsDataURL(file);   
   }
 
   sendPicture(file){
-    let formData = new FormData();
 
-    formData.append("image", file); 
     fetch('https://localhost:7132/api/Values', {
         method: 'POST',
-        body: formData
+        body: JSON.stringify({"TClassId": 1, "TClassName" : "Hi"})
       })
       .then(response => response.json())
       .then(imageFromServer => {
@@ -365,13 +368,13 @@ class ThirdStep extends React.Component{
           <div>
             <div className="row-md" style={{marginTop: 30}}>
               <div className="col-md-10 offset-md-1">
-                <img name="image" src={this.state.image} className="col-md-8 offset-md-2" onChange={this.handleChangeImage}/>
+                <img name="image" src={this.state.image} className="col-md-8 offset-md-2"/>
               </div>
             </div>
             <div className="row-md" style={{marginTop: 30}}>
                 <div className="col-md-10 offset-md-1">
                   <div className="input-group">
-                  <input type="file" aria-describedby="basic-addon1" id="fi" onChange={this.handleChangeFile}/>
+                  <input type="file" className="form-control" aria-describedby="basic-addon1" id="fi" onChange={this.handleChangeFile}/>
                   </div>
                 </div>
               </div>
