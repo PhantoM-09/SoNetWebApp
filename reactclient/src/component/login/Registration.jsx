@@ -1,11 +1,96 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 const RegistrationForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [registrationUser, setRegistrationUser] = useState({lastName: '', name: '', email: '', password: '', birthDate: '', sex: '', image: {}});
+  const [registrationUser, setRegistrationUser] = useState({lastName: '', name: '', email: '', password: '', birthDate: new Date(), sex: '', image: {}});
+
+  const[registrationUserDirty, setRegistrationUserDirty] = useState({lastNameDirty: false, nameDirty: false, emailDirty: false, passwordDirty: false});
+  const[registrationUserError, setRegistrationUserError] = useState({lastNameError: 'Фамилия не может быть пустой', nameError: 'Имя не может быть пустым', emailError: 'Email не может быть пустым', passwordError: 'Пароль не может быть пустым'});
+  
+  const[stepValid, setStepValid] = useState(false);
+
+  useEffect(() => {
+    if(registrationUserError.lastNameError || registrationUserError.nameError || registrationUserError.emailError || registrationUserError.passwordError)
+    {
+      setStepValid(false);
+    }
+    else
+    {
+      setStepValid(true);
+    }
+  }, [registrationUserError.lastNameError, registrationUserError.nameError, registrationUserError.emailError, registrationUserError.passwordError])
+
+  const blurHandle = (e) =>{
+    switch(e.target.name){
+        case 'lastName':
+            setRegistrationUserDirty({...registrationUserDirty, lastNameDirty: true});
+            break;
+        case 'name':
+            setRegistrationUserDirty({...registrationUserDirty, nameDirty: true});
+            break;
+        case 'email':
+            setRegistrationUserDirty({...registrationUserDirty, emailDirty: true});
+            break;
+        case 'password':
+            setRegistrationUserDirty({...registrationUserDirty, passwordDirty: true});
+            break;
+    }
+  }
+
+  const lastNameChangeHandle = (event) =>{
+    var lastName = event.target.value;
+    setRegistrationUser({...registrationUser, lastName: event.target.value});
+
+    if(!lastName){
+      setRegistrationUserError({...registrationUserError, lastNameError: 'Фамилия не может быть пустой'});
+    }
+    else{
+      setRegistrationUserError({...registrationUserError, lastNameError: ''});
+    }
+  }
+
+  const nameChangeHandle = (event) =>{
+    var name = event.target.value;
+    setRegistrationUser({...registrationUser, name: event.target.value});
+
+    if(!name){
+      setRegistrationUserError({...registrationUserError, nameError: 'Имя не может быть пустым'});
+    }
+    else{
+      setRegistrationUserError({...registrationUserError, nameError: ''});
+    }
+  }
+
+  const emailChangeHandle = (event) =>{
+    var email = event.target.value;
+    setRegistrationUser({...registrationUser, email: event.target.value});
+
+    const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    if(!re.test(String(email).toLowerCase())){
+        setRegistrationUserError({...registrationUserError, emailError: 'Некорректный email'});
+    }
+    else{
+      setRegistrationUserError({...registrationUserError, emailError: ''});
+    }
+  }
+
+  const passwordChangeHandle = (event) =>{
+    var password = event.target.value;
+    setRegistrationUser({...registrationUser, password: event.target.value});
+
+    if(password.length <3 ){
+      setRegistrationUserError({...registrationUserError, passwordError: 'Пароль должен быть больше 3-х символов'});
+        if(!password){
+          setRegistrationUserError({...registrationUserError, passwordError: 'Пароль не может быть пустым'});
+        }
+    }
+    else{
+      setRegistrationUserError({...registrationUserError, passwordError: ''});
+    }
+}
 
   const _next = () => {
       let curStep = currentStep;
@@ -46,7 +131,7 @@ const RegistrationForm = () => {
           return (
               <div className="row-md" style={{marginTop: 30}}>
                   <div className="col-md"  >
-                      <button type="button" className="btn btn-primary col-md-10 offset-md-1" onClick={_next}>Далее</button>
+                      <button disabled={!stepValid} type="button" className="btn btn-primary col-md-10 offset-md-1" onClick={_next}>Далее</button>
                   </div>
               </div>
           )
@@ -68,13 +153,7 @@ const RegistrationForm = () => {
   }
 
   return (
-    <div className="row" style={{marginTop: 20}}>
-    <div className="col-md-4 offset-md-4" style={{border: '1px black solid', borderRadius: 8}}>
-      <div className="row-md">
-        <div className="col-md">
-          <img className="col-md-8 offset-md-2" src="logo-symbol.png" style={{marginTop: 30}} />
-        </div>
-      </div>
+    <form>
       <FirstStep
         currentStep = {currentStep}
         setRegistrationUser = {setRegistrationUser}
@@ -83,6 +162,13 @@ const RegistrationForm = () => {
         name = {registrationUser.name}
         email = {registrationUser.email}
         password = {registrationUser.password}
+        blurHandle = {blurHandle}
+        registrationUserDirty = {registrationUserDirty}
+        registrationUserError = {registrationUserError}
+        lastNameChangeHandle = {lastNameChangeHandle}
+        nameChangeHandle = {nameChangeHandle}
+        emailChangeHandle = {emailChangeHandle}
+        passwordChangeHandle = {passwordChangeHandle}
         />
       <SecondStep
         currentStep = {currentStep}
@@ -104,8 +190,7 @@ const RegistrationForm = () => {
           <button type="button" className="btn btn-primary col-md-10 offset-md-1">Вход</button>
         </div>
       </div>
-    </div>
-  </div>
+    </form>
   );
 }
 
@@ -119,30 +204,50 @@ const FirstStep = (props) => {
   return (
     <div>
         <div className="row-md" style={{marginTop: 30}}>
+            <div className="col-md-10 offset-md-1">
+            {(props.registrationUserDirty.lastNameDirty && props.registrationUserError.lastNameError) && <div style={{color: 'red'}}>{props.registrationUserError.lastNameError}</div>}
+            </div>
+        </div>
+        <div className="row-md" style={{marginTop: 0}}>
         <div className="col-md-10 offset-md-1">
           <div className="input-group">
-          <input name="lastName" type="text" className="form-control" placeholder="Фамилия" aria-label="LastName" aria-describedby="basic-addon1" value={props.lastName} onChange={e => props.setRegistrationUser({...props.registrationUser, lastName: e.target.value})}/>
+          <input onBlur={props.blurHandle} name="lastName" type="text" className="form-control" placeholder="Фамилия" aria-label="LastName" aria-describedby="basic-addon1" value={props.lastName} onChange={props.lastNameChangeHandle}/>
           </div>
         </div>
       </div>
       <div className="row-md" style={{marginTop: 10}}>
+            <div className="col-md-10 offset-md-1">
+            {(props.registrationUserDirty.nameDirty && props.registrationUserError.nameError) && <div style={{color: 'red'}}>{props.registrationUserError.nameError}</div>}
+            </div>
+      </div>
+      <div className="row-md" style={{marginTop: 0}}>
         <div className="col-md-10 offset-md-1">
           <div className="input-group">
-            <input name="name" type="text" className="form-control" placeholder="Имя" aria-label="Name" aria-describedby="basic-addon1" value={props.name} onChange={e => props.setRegistrationUser({...props.registrationUser, name: e.target.value})}/>
+            <input onBlur={props.blurHandle}  name="name" type="text" className="form-control" placeholder="Имя" aria-label="Name" aria-describedby="basic-addon1" value={props.name} onChange={props.nameChangeHandle}/>
           </div>
         </div>
       </div>
       <div className="row-md" style={{marginTop: 10}}>
+            <div className="col-md-10 offset-md-1">
+            {(props.registrationUserDirty.emailDirty && props.registrationUserError.emailError) && <div style={{color: 'red'}}>{props.registrationUserError.emailError}</div>}
+            </div>
+      </div>
+      <div className="row-md" style={{marginTop: 0}}>
         <div className="col-md-10 offset-md-1">
           <div className="input-group">
-            <input name="email" type="text" className="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" value={props.email} onChange={e => props.setRegistrationUser({...props.registrationUser, email: e.target.value})}/>
+            <input onBlur={props.blurHandle} name="email" type="text" className="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" value={props.email} onChange={props.emailChangeHandle}/>
           </div>
         </div>
       </div>
       <div className="row-md" style={{marginTop: 10}}>
+            <div className="col-md-10 offset-md-1">
+            {(props.registrationUserDirty.passwordDirty && props.registrationUserError.passwordError) && <div style={{color: 'red'}}>{props.registrationUserError.passwordError}</div>}
+            </div>
+      </div>
+      <div className="row-md" style={{marginTop: 0}}>
         <div className="col-md-10 offset-md-1">
           <div className="input-group">
-            <input name="password" type="text" className="form-control" placeholder="Пароль" aria-label="Password" aria-describedby="basic-addon1" value={props.password} onChange={e => props.setRegistrationUser({...props.registrationUser, password: e.target.value})}/>
+            <input onBlur={props.blurHandle} name="password" type="text" className="form-control" placeholder="Пароль" aria-label="Password" aria-describedby="basic-addon1" value={props.password} onChange={props.passwordChangeHandle}/>
           </div>
         </div>
       </div>
@@ -170,8 +275,8 @@ const SecondStep = (props) => {
       <div className="row-md" style={{marginTop: 10}}>
         <div className="col-md offset-md-1" style={{display:'inline-block'}}>
               <div className="input-group">
-                <select name="sex" className="form-select" aria-label="Default select example" value={props.sex} onChange={e => props.setRegistrationUser({...props.registrationUser, sex: e.target.value})}>
-                  <option value="male" selected>Мужской</option>
+                <select name="sex" className="form-select" aria-label="Default select example" seleted="male" value={props.sex} onChange={e => props.setRegistrationUser({...props.registrationUser, sex: e.target.value})}>
+                  <option value="male">Мужской</option>
                   <option value="female">Женский</option>
                 </select>
               </div>
