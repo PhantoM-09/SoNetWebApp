@@ -11,9 +11,9 @@ namespace DatabaseManager.Pattern
     {
         private AppDbContext _context;
 
-        public UnitOfWork()
+        public UnitOfWork(AppDbContext appDbContext)
         {
-            _context = new AppDbContext(ConfigurationManager.GetDbOptions());
+            _context = appDbContext;
         }
 
         private AddressRepository _addressRepository;

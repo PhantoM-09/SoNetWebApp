@@ -8,11 +8,6 @@ namespace DatabaseManager.Pattern.Repositories
     {
         private AppDbContext _context;
 
-        public UFileRepository()
-        {
-            _context = new AppDbContext(ConfigurationManager.GetDbOptions());
-        }
-
         public UFileRepository(AppDbContext context)
         {
             _context = context;

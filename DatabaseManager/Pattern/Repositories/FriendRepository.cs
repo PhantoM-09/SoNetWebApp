@@ -8,11 +8,6 @@ namespace DatabaseManager.Pattern.Repositories
     {
         private AppDbContext _context;
 
-        public FriendRepository()
-        {
-            _context = new AppDbContext(ConfigurationManager.GetDbOptions());
-        }
-
         public FriendRepository(AppDbContext context)
         {
             _context = context;

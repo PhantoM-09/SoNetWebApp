@@ -4,6 +4,8 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using System.IO;
 using System.Text.Json;
+using Models;
+using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,24 +30,39 @@ namespace WebApiServer.Controllers
         }
 
         // POST api/<ValuesController>
+        
         [HttpPost]
-        public string Post()
+        public void Post()
         {
-            
-            var file = Request.Form.Files["image"];
-            var filePath = "wwwroot/" + file.FileName;
-
-            using (MemoryStream stream = new MemoryStream())
+            var reader = Request.BodyReader;
+            var stream = reader.AsStream();
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                file.CopyTo(stream);
+                stream.CopyTo(memoryStream);
 
-                using (Image image = Image.FromStream(stream))
-                {
-                    image.Save(filePath, ImageFormat.Png);
-                }
+                memoryStream.Position = 0;
+
+                var bytes = memoryStream.ToArray();
+
+                var json = Encoding.UTF8.GetString(bytes);
+
+                User user = JsonSerializer.Deserialize<User>(json);
             }
+            
+            //var file = Request.Form.Files["image"];
+            //var filePath = "wwwroot/" + file.FileName;
 
-            return JsonSerializer.Serialize("https://localhost:7132/" + file.FileName);
+            //using (MemoryStream stream = new MemoryStream())
+            //{
+            //    file.CopyTo(stream);
+
+            //    using (Image image = Image.FromStream(stream))
+            //    {
+            //        image.Save(filePath, ImageFormat.Png);
+            //    }
+            //}
+
+            //return JsonSerializer.Serialize("https://localhost:7132/" + file.FileName);
 
 
             //var file = Request.Form.Files["image"];

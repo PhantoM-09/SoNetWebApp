@@ -8,11 +8,6 @@ namespace DatabaseManager.Pattern.Repositories
     {
         private AppDbContext _context;
 
-        public AddressRepository()
-        {
-            _context = new AppDbContext(ConfigurationManager.GetDbOptions());
-        }
-
         public AddressRepository(AppDbContext context)
         {
             _context = context;

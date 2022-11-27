@@ -9,11 +9,6 @@ namespace DatabaseManager.Pattern.Repositories
 
         private AppDbContext _context;
 
-        public PostRepository()
-        {
-            _context = new AppDbContext(ConfigurationManager.GetDbOptions());
-        }
-
         public PostRepository(AppDbContext context)
         {
             _context = context;

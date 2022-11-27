@@ -36,7 +36,7 @@ namespace Models
         public DateTime UserBirthDay { get; set; }
 
         [Column("ADDRESSID")]
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
 
         [Column("USERISONLINE")]
         public bool UserIsOnline { get; set; }
@@ -45,10 +45,10 @@ namespace Models
         public DateTime UserOnlineDate { get; set; }
 
         [Column("USERTYPE")]
-        public int UserType { get; set; }
+        public string UserType { get; set; }
 
         [Column("BLOCKID")]
-        public int BlockId { get; set; } = 0;
+        public int? BlockId { get; set; } = 0;
 
         public virtual Address Address { get; set; }
         public virtual Block Block { get; set; }

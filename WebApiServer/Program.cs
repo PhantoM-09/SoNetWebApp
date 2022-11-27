@@ -1,6 +1,14 @@
+using DatabaseManager;
+using DatabaseManager.Pattern;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(options =>
+                                                options.UseSqlServer(connection));
+builder.Services.AddTransient<UnitOfWork>();
 
 builder.Services.AddCors(options =>
 {

@@ -2,15 +2,40 @@ import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
+import { LOGIN_ROUTE } from "../../utils/consts";
 
 const RegistrationForm = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
-  const [registrationUser, setRegistrationUser] = useState({lastName: '', name: '', email: '', password: '', birthDate: new Date(), sex: '', image: {}});
+  const [registrationUser, setRegistrationUser] = useState({lastName: '', name: '', email: '', password: '', birthDate: new Date(), sex: 'male', image: {}});
 
   const[registrationUserDirty, setRegistrationUserDirty] = useState({lastNameDirty: false, nameDirty: false, emailDirty: false, passwordDirty: false});
   const[registrationUserError, setRegistrationUserError] = useState({lastNameError: 'Фамилия не может быть пустой', nameError: 'Имя не может быть пустым', emailError: 'Email не может быть пустым', passwordError: 'Пароль не может быть пустым'});
   
   const[stepValid, setStepValid] = useState(false);
+
+  const GoLogin = () =>
+  {
+    navigate(LOGIN_ROUTE);
+  }
+
+  const Registration = () =>{
+    var user = {
+      UserId: 0,
+      UserEmail: registrationUser.email,
+      UserPassword: registrationUser.password,
+      UserLastName: registrationUser.lastName,
+      UserBirthDay: registrationUser.birthDate,
+    };
+    fetch('https://localhost:7132/api/Auth/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      body: JSON.stringify(user),
+    })
+  }
 
   useEffect(() => {
     if(registrationUserError.lastNameError || registrationUserError.nameError || registrationUserError.emailError || registrationUserError.passwordError)
@@ -144,7 +169,7 @@ const RegistrationForm = () => {
           return (
               <div className="row-md" style={{marginTop: 10}}>
                   <div className="col-md"  >
-                      <button type="button" className="btn btn-primary col-md-10 offset-md-1">Регистрация</button>
+                      <button type="button" className="btn btn-primary col-md-10 offset-md-1" onClick={Registration}>Регистрация</button>
                   </div>
               </div>
           )
@@ -175,6 +200,7 @@ const RegistrationForm = () => {
         setRegistrationUser = {setRegistrationUser}
         registrationUser = {registrationUser}
         birthDate = {registrationUser.birthDate}
+        sex={registrationUser.sex}
         />
       <ThirdStep
         currentStep = {currentStep}
@@ -187,7 +213,7 @@ const RegistrationForm = () => {
       {sendButton()}
       <div className="row-md" style={{marginTop: 10, marginBottom: 30}}>
         <div className="col-md">
-          <button type="button" className="btn btn-primary col-md-10 offset-md-1">Вход</button>
+          <button type="button" className="btn btn-primary col-md-10 offset-md-1" onClick={GoLogin}>Вход</button>
         </div>
       </div>
     </form>
@@ -275,7 +301,7 @@ const SecondStep = (props) => {
       <div className="row-md" style={{marginTop: 10}}>
         <div className="col-md offset-md-1" style={{display:'inline-block'}}>
               <div className="input-group">
-                <select name="sex" className="form-select" aria-label="Default select example" seleted="male" value={props.sex} onChange={e => props.setRegistrationUser({...props.registrationUser, sex: e.target.value})}>
+                <select name="sex" className="form-select" aria-label="Default select example" selected={props.sex} onChange={e => props.setRegistrationUser({...props.registrationUser, sex: e.target.selected})}>
                   <option value="male">Мужской</option>
                   <option value="female">Женский</option>
                 </select>

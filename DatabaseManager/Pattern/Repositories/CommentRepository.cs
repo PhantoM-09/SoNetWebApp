@@ -9,12 +9,6 @@ namespace DatabaseManager.Pattern.Repositories
     public class CommentRepository : IRepository<Comment>
     {
         private AppDbContext _context;
-
-        public CommentRepository()
-        {
-            _context = new AppDbContext(ConfigurationManager.GetDbOptions());
-        }
-
         public CommentRepository(AppDbContext context)
         {
             _context = context;
