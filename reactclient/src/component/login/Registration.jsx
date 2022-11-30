@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-
+import {  toast } from 'react-toastify';
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_ROUTE } from "../../utils/consts";
+import "react-toastify/dist/ReactToastify.css";
 
-const RegistrationForm = () => {
+const RegistrationForm = (props) => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [registrationUser, setRegistrationUser] = useState({lastName: '', name: '', email: '', password: '', birthDate: new Date(), sex: 'male', image: {}});
@@ -26,15 +27,48 @@ const RegistrationForm = () => {
       UserEmail: registrationUser.email,
       UserPassword: registrationUser.password,
       UserLastName: registrationUser.lastName,
+      UserName: registrationUser.name,
+      UserSex: registrationUser.sex,
       UserBirthDay: registrationUser.birthDate,
     };
-    fetch('https://localhost:7132/api/Auth/', {
+    fetch('https://localhost:7132/api/registration', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       }, 
       body: JSON.stringify(user),
     })
+    .then(response=>{
+      if(response.json() !== 'Email занят') {
+        var userFile = new FormData();
+        userFile.append("image", registrationUser.file);
+        userFile.append("email", registrationUser.email);
+
+        fetch('https://localhost:7132/api/file/send-file', {
+          method: 'POST',
+          body: userFile,
+        })
+        .then(resp=>{
+          if(resp.status === 200)
+          {
+            toast.success("Новый пользователь создан", {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: 2000,
+              pauseOnFocusLoss: false
+            })
+          }
+        })
+      }
+      else
+      {
+        return Promise.reject(response.json());
+      }
+    })
+    .catch((error) => toast.error(error, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+      pauseOnFocusLoss: false
+    }));
   }
 
   useEffect(() => {

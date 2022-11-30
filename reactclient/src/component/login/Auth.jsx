@@ -3,6 +3,8 @@ import {useLocation} from "react-router-dom";
 import { LOGIN_ROUTE } from "../../utils/consts";
 import LoginForm from "./Login";
 import RegistrationForm from "./Registration";
+import { ToastContainer } from 'react-toastify';
+
 
 const AuthForm = () => {
     const location = useLocation();
@@ -22,7 +24,7 @@ const AuthForm = () => {
                 :
                 (<RegistrationForm/>)
                 }
-
+                <ToastContainer/>
             </div>
             </div>
         </div>

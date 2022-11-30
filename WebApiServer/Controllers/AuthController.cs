@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using WebApiServer.Model;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApiServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -19,35 +18,44 @@ namespace WebApiServer.Controllers
             this._unitOfWork = unitOfWork;
         }
 
-        // POST api/<AuthController>
+        // POST api/registration
+        [Route("registration")]
         [HttpPost]
-        public void Post([FromBody] SimpleUser simpleUser)
+        public string Registration([FromBody] SimpleUser simpleUser)
         {
-            User user = new User();
-            user.UserLastName = simpleUser.UserLastName;
-            user.UserName = simpleUser.UserName;
-            user.UserEmail = simpleUser.UserEmail;
+            var userExist = _unitOfWork.UserRepository.GetItems().FirstOrDefault(u => u.UserEmail == simpleUser.UserEmail);
+            if(userExist != null)
+            {
+                return JsonSerializer.Serialize("Email занят");
+            }
 
             MD5 md5 = MD5.Create();
-            user.UserPassword = Convert.ToBase64String(
+
+            User user = new User
+            {
+                UserLastName = simpleUser.UserLastName,
+                UserName = simpleUser.UserName,
+                UserEmail = simpleUser.UserEmail,
+                UserPassword = Convert.ToBase64String(
                                         md5.ComputeHash(
-                                            Encoding.UTF8.GetBytes(simpleUser.UserPassword)));
+                                            Encoding.UTF8.GetBytes(simpleUser.UserPassword))),
+                UserSex = simpleUser.UserSex,
+                UserBirthDay = (DateTime)simpleUser.UserBirthDay,
+                UserIsOnline = false,
+                UserType = "User",
 
-            user.UserSex = simpleUser.UserSex;
-            user.UserBirthDay = simpleUser.UserBirthDay;
-            
+            };
+            _unitOfWork.UserRepository.AddElement(user);
+            _unitOfWork.SaveChanges();
+
+            Directory.CreateDirectory("wwwroot/" + Convert.ToBase64String(
+                                                           md5.ComputeHash(
+                                                               Encoding.UTF8.GetBytes(user.UserEmail))));
+
+            return JsonSerializer.Serialize("");
         }
 
-        // PUT api/<AuthController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
-        // DELETE api/<AuthController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+
     }
 }

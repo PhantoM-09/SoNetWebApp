@@ -42,16 +42,16 @@ namespace Models
         public bool UserIsOnline { get; set; }
 
         [Column("USERONLINEDATE")]
-        public DateTime UserOnlineDate { get; set; }
+        public DateTime? UserOnlineDate { get; set; }
 
         [Column("USERTYPE")]
         public string UserType { get; set; }
 
         [Column("BLOCKID")]
-        public int? BlockId { get; set; } = 0;
+        public int? BlockId { get; set; }
 
-        public virtual Address Address { get; set; }
-        public virtual Block Block { get; set; }
+        public virtual Address? Address { get; set; }
+        public virtual Block? Block { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Message> MessagesSend { get; set; }

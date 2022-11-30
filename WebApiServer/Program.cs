@@ -10,6 +10,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
                                                 options.UseSqlServer(connection));
 builder.Services.AddTransient<UnitOfWork>();
 
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueCountLimit = 10; //default 1024
+    options.ValueLengthLimit = int.MaxValue; //not recommended value
+    options.MultipartBodyLengthLimit = long.MaxValue; //not recommended value
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CORSPolicy",
@@ -23,12 +30,6 @@ builder.Services.AddCors(options =>
 });
 // Add services to the container.
 
-builder.Services.Configure<FormOptions>(options =>
-{
-    options.ValueCountLimit = 10; //default 1024
-    options.ValueLengthLimit = int.MaxValue; //not recommended value
-    options.MultipartBodyLengthLimit = long.MaxValue; //not recommended value
-});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

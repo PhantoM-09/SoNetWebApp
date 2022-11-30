@@ -49,34 +49,7 @@ namespace WebApiServer.Controllers
                 User user = JsonSerializer.Deserialize<User>(json);
             }
             
-            //var file = Request.Form.Files["image"];
-            //var filePath = "wwwroot/" + file.FileName;
-
-            //using (MemoryStream stream = new MemoryStream())
-            //{
-            //    file.CopyTo(stream);
-
-            //    using (Image image = Image.FromStream(stream))
-            //    {
-            //        image.Save(filePath, ImageFormat.Png);
-            //    }
-            //}
-
-            //return JsonSerializer.Serialize("https://localhost:7132/" + file.FileName);
-
-
-            //var file = Request.Form.Files["image"];
-            //var filePath = "d:/UserFiles/" + file.FileName;
-
-            //string base64 = "";
-            //using (MemoryStream stream = new MemoryStream())
-            //{
-            //    file.CopyTo(stream);
-
-            //    base64 = Convert.ToBase64String(stream.ToArray());
-            //}
-
-            //return JsonSerializer.Serialize(base64);
+            
         }
 
         // PUT api/<ValuesController>/5
