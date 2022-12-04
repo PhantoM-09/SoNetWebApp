@@ -12,42 +12,40 @@ namespace WebApiServer.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
-        // GET: api/<FileController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<FileController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/send-file
-        [Route("send-file")]
+        [Route("add-profile-image")]
         [HttpPost]
-        public void Post()
+        public IActionResult AddProfileImage()
         {
-            var file = Request.Form.Files["image"];
-            var email = Request.Form["email"];
-            MD5 md5 = MD5.Create();
-            var userDirectory = Convert.ToBase64String(
-                                        md5.ComputeHash(
-                                            Encoding.UTF8.GetBytes(email)));
-
-            var filePath = "wwwroot/" + userDirectory + "/" + file.FileName;
-
-            using (MemoryStream stream = new MemoryStream())
+            try
             {
-                file.CopyTo(stream);
+                var file = Request.Form.Files["image"];
+                if (file == null)
+                    return Ok("Пользователь создан");
 
-                using (Image image = Image.FromStream(stream))
+                var email = Request.Form["email"];
+                MD5 md5 = MD5.Create();
+                var userDirectory = Convert.ToBase64String(
+                                            md5.ComputeHash(
+                                                Encoding.UTF8.GetBytes(email)));
+
+                var filePath = "wwwroot/" + userDirectory + "/" + file.FileName;
+
+                using (MemoryStream stream = new MemoryStream())
                 {
-                    image.Save(filePath, ImageFormat.Png);
+                    file.CopyTo(stream);
+
+                    using (Image image = Image.FromStream(stream))
+                    {
+                        image.Save(filePath, ImageFormat.Png);
+                    }
                 }
+
+                return Ok("Пользователь создан");
+            }
+            catch(Exception ex)
+            {
+                return Ok("Пользователь создан");
             }
         }
 
