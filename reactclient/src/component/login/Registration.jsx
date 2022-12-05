@@ -21,7 +21,9 @@ const RegistrationForm = (props) => {
     navigate(LOGIN_ROUTE);
   }
 
-  const Registration = () => {
+  const Registration = (e) => {
+    e.preventDefault();
+
     var modifiedLastName = registrationUser.lastName.trim().replace(/ +/g, ' ');
     var modifiedName = registrationUser.name.trim().replace(/ +/g, ' ');
     var user = {
@@ -33,13 +35,13 @@ const RegistrationForm = (props) => {
       UserSex: registrationUser.sex,
       UserBirthDay: registrationUser.birthDate,
     };
-    axios.post('https://localhost:7132/api/auth/register', user)
+    axios.post('https://localhost:7132/api/auth/register', user, {withCredentials: true})
       .then(userResponse => {
         var userFile = new FormData();
-        userFile.append("image", registrationUser.file);
+        userFile.append("image", registrationUser.image);
         userFile.append("email", registrationUser.email);
 
-        axios.post('https://localhost:7132/api/file/add-profile-image', userFile)
+        axios.post('https://localhost:7132/api/file/add-profile-image', userFile, {withCredentials: true})
           .then(imageResponse => {
             toast.success(imageResponse.data, {
               position: toast.POSITION.TOP_RIGHT,
@@ -190,7 +192,7 @@ const RegistrationForm = (props) => {
       return (
         <div className="row-md" style={{ marginTop: 30 }}>
           <div className="col-md"  >
-            <button type="button" className="btn btn-primary col-md-10 offset-md-1" onClick={Registration}>Регистрация</button>
+            <button type="submit" className="btn btn-primary col-md-10 offset-md-1">Регистрация</button>
           </div>
         </div>
       )
@@ -199,7 +201,7 @@ const RegistrationForm = (props) => {
   }
 
   return (
-    <form>
+    <form onSubmit={Registration}>
       <FirstStep
         currentStep={currentStep}
         setRegistrationUser={setRegistrationUser}
@@ -227,7 +229,7 @@ const RegistrationForm = (props) => {
         currentStep={currentStep}
         setRegistrationUser={setRegistrationUser}
         registrationUser={registrationUser}
-        file={registrationUser.file}
+        image={registrationUser.image}
       />
       {nextButton()}
       {sendButton()}
@@ -339,7 +341,7 @@ const ThirdStep = (props) => {
   const handleChangeFile = (event) => {
     var file = event.target.files[0];
 
-    props.setRegistrationUser({ ...props.registrationUser, file: file });
+    props.setRegistrationUser({ ...props.registrationUser, image: file });
     convertFileToImage(file);
   }
 

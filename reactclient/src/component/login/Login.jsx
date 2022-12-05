@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../..";
-import { REGISTRATION_ROUTE } from "../../utils/consts";
+import { PROFILE_ROUTE, REGISTRATION_ROUTE } from "../../utils/consts";
 import { toast } from 'react-toastify';
 
 const LoginForm = () => {
     const navigate = useNavigate();
-    const userStore = useContext(Context);
+    const {user} = useContext(Context);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -69,14 +69,20 @@ const LoginForm = () => {
         navigate(REGISTRATION_ROUTE);
     }
 
-    const Login = () => {
+    const Login = (e) => {
+        e.preventDefault();
+
         const userData = new FormData();
         userData.append("email", email);
         userData.append("password", password);
 
-        axios.post('https://localhost:7132/api/auth/login', userData)
+        axios.post('https://localhost:7132/api/auth/login', userData, {withCredentials: true})
             .then(response => {
-                userStore.isAuth = true;
+                user.setAuth(true);
+                if (response.data === "Admin") {
+                    user.setAdmin(true);
+                }
+                navigate(PROFILE_ROUTE);
             })
             .catch(error => {
                 if (error.response) {
@@ -90,7 +96,7 @@ const LoginForm = () => {
     }
 
     return (
-        <form>
+        <form onSubmit={Login}>
             <div className="row-md" style={{ marginTop: 30 }}>
                 <div className="col-md-10 offset-md-1">
                     {(emailDirty && emailError) && <div style={{ color: 'red' }}>{emailError}</div>}
@@ -117,7 +123,7 @@ const LoginForm = () => {
             </div>
             <div className="row-md" style={{ marginTop: 30 }}>
                 <div className="col-md">
-                    <button type="button" className="btn btn-primary col-md-10 offset-md-1" disabled={!formValid} onClick={Login}>Вход</button>
+                    <button type="submit" className="btn btn-primary col-md-10 offset-md-1" disabled={!formValid}>Вход</button>
                 </div>
             </div>
             <div className="row-md" style={{ marginTop: 10, marginBottom: 30 }}>
@@ -127,6 +133,6 @@ const LoginForm = () => {
             </div>
         </form>
     );
-}
+};
 
 export default LoginForm;

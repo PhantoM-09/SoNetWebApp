@@ -72,13 +72,18 @@ namespace WebApiServer.Controllers
             if (!string.Equals(foundUser.UserPassword, Convert.ToBase64String(md5.ComputeHash(Encoding.UTF8.GetBytes(password)))))
                 return BadRequest(new { message = "Неверный пароль" });
 
-            var jwtToken = _jwtService.GenerateToken(foundUser.UserId, foundUser.UserType);
-            Response.Cookies.Append("jwtToken", jwtToken, new CookieOptions
+            var jwt = _jwtService.GenerateToken(foundUser.UserId, foundUser.UserType);
+            Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
-                HttpOnly = true
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
             });
 
-            return Ok();
+            if (string.Equals(foundUser.UserType, "User"))
+                return Ok("User");
+            else
+                return Ok("Admin");
         }
     }
 }

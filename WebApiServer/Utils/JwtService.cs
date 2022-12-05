@@ -7,7 +7,7 @@ namespace WebApiServer.Utils
 {
     public class JwtService
     {
-        private string secureKey = "SoNetUser";
+        private string secureKey = "secure key for sonet user";
 
         public string GenerateToken(int id, string role)
         {
@@ -19,7 +19,7 @@ namespace WebApiServer.Utils
             listClaims.Add(claim);
 
             var header = new JwtHeader(credentials);
-            var payload = new JwtPayload(id.ToString(), null, listClaims, null, DateTime.Today.AddDays(1));
+            var payload = new JwtPayload(id.ToString(), null, listClaims, null, DateTime.Today.AddDays(1)); 
 
             var securityToken = new JwtSecurityToken(header, payload);
 
@@ -35,7 +35,8 @@ namespace WebApiServer.Utils
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = false,
-                ValidateAudience = false
+                ValidateAudience = false,
+                ValidateLifetime = false
             }, out SecurityToken validatedToken);
 
             return (JwtSecurityToken)validatedToken;

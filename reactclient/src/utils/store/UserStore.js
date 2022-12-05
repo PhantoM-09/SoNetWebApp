@@ -1,17 +1,36 @@
-import {makeAutoObservable} from "mobx";
+import { makeAutoObservable } from "mobx";
+
 
 class UserStore {
     constructor() {
         this._isAuth = false
-        makeAutoObservable(this)
+        this._isAdmin = false
+        this._start = false
+        makeAutoObservable(this);
     }
 
-    setIsAuth(isAuth) {
-        this._isAuth = isAuth;
+    setAuth(bool) {
+        this._isAuth = bool;
+    }
+
+    setAdmin(isAdmin) {
+        this._isAdmin = isAdmin;
+    }
+
+    setStart(start) {
+        this._start = start;
     }
 
     get isAuth() {
         return this._isAuth;
+    }
+
+    get isAdmin() {
+        return this._isAdmin;
+    }
+
+    get isStart() {
+        return this._start;
     }
 }
 

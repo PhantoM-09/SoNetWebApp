@@ -21,28 +21,33 @@ namespace WebApiServer.Controllers
             this._jwtService = jwtService;
         }
 
-        //[HttpGet("get-user/{id}")]
-        //public string Get()
-        //{
-        //    try
-        //    {
-        //        var jwtToken = Request.Cookies["jwtToken"];
-        //        var validatedToken = _jwtService.Verify(jwtToken);
+        [HttpGet("get-user")]
+        public IActionResult Get()
+        {
+            try
+            {
+                var jwtToken = Request.Cookies["jwt"];
+                var validatedToken = _jwtService.Verify(jwtToken);
 
-        //        var userId = int.Parse(validatedToken.Issuer);
+                var userId = int.Parse(validatedToken.Issuer);
+                User foundUser = _unitOfWork.UserRepository.GetItem(userId);
+                SimpleUser user = new SimpleUser
+                {
+                    UserId = foundUser.UserId,
+                    UserLastName = foundUser.UserLastName,
+                    UserName = foundUser.UserName,
+                    UserBirthDay = foundUser.UserBirthDay,
+                    UserSex = foundUser.UserSex
+                };
 
-        //    }
-        //    User foundUser = _unitOfWork.UserRepository.GetItem(id);
-        //    SimpleUser user = new SimpleUser
-        //    {
-        //        UserId = foundUser.UserId,
-        //        UserLastName = foundUser.UserLastName,
-        //        UserName = foundUser.UserName,
-        //        UserBirthDay = foundUser.UserBirthDay,
-        //        UserSex = foundUser.UserSex
-        //    };
+                return Ok(user);
+            }
+            catch(Exception ex)
+            {
+                return Unauthorized(new {message = "Вы не авторизованы"});
+            }
 
-        //    return JsonSerializer.Serialize(user);
-        //}
+
+        }
     }
 }
