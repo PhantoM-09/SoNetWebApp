@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
-using System.Drawing.Imaging;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using System.Collections;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -34,11 +36,10 @@ namespace WebApiServer.Controllers
                 using (MemoryStream stream = new MemoryStream())
                 {
                     file.CopyTo(stream);
+                    stream.Position = 0;
 
-                    using (Image image = Image.FromStream(stream))
-                    {
-                        image.Save(filePath, ImageFormat.Png);
-                    }
+                    var image = Image.Load<Rgba32>(stream);
+                    image.SaveAsPng(filePath);
                 }
 
                 return Ok("Пользователь создан");
