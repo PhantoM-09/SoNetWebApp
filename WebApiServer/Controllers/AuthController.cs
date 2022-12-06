@@ -43,8 +43,7 @@ namespace WebApiServer.Controllers
                                         md5.ComputeHash(
                                             Encoding.UTF8.GetBytes(simpleUser.UserPassword))),
                 UserSex = simpleUser.UserSex,
-                UserBirthDay = (DateTime)simpleUser.UserBirthDay,
-                UserIsOnline = false,
+                UserBirthDay = simpleUser.UserBirthDay,
                 UserType = "User",
 
             };

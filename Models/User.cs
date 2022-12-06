@@ -33,16 +33,10 @@ namespace Models
         public string UserSex { get; set; }
 
         [Column("USERBDAY")]
-        public DateTime UserBirthDay { get; set; }
+        public DateTime? UserBirthDay { get; set; }
 
         [Column("ADDRESSID")]
         public int? AddressId { get; set; }
-
-        [Column("USERISONLINE")]
-        public bool UserIsOnline { get; set; }
-
-        [Column("USERONLINEDATE")]
-        public DateTime? UserOnlineDate { get; set; }
 
         [Column("USERTYPE")]
         public string UserType { get; set; }

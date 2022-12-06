@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-using System.Collections;
-using System.Security.Cryptography;
-using System.Text;
+﻿using DatabaseManager.Pattern;
+using Microsoft.AspNetCore.Mvc;
+using Models;
+using WebApiServer.Utils;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +11,33 @@ namespace WebApiServer.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
+        UnitOfWork _unitOfWork;
+        JwtService _jwtService;
+        public FileController(UnitOfWork unitOfWork, JwtService jwtService)
+        {
+            this._unitOfWork = unitOfWork;
+            this._jwtService = jwtService;
+        }
+
+        [Route("get-profile-image")]
+        [HttpGet]
+        public IActionResult GetProfileImages()
+        {
+            try
+            {
+                var jwtToken = Request.Cookies["jwt"];
+                var validatedToken = _jwtService.Verify(jwtToken);
+
+                var userId = int.Parse(validatedToken.Issuer);
+                
+                return Ok(JsonConverter.ConverProfileImages(userId, _unitOfWork));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new { message = "Вы не авторизованы" });
+            }
+        }
+
         // POST api/send-file
         [Route("add-profile-image")]
         [HttpPost]
@@ -26,21 +50,18 @@ namespace WebApiServer.Controllers
                     return Ok("Пользователь создан");
 
                 var email = Request.Form["email"];
-                MD5 md5 = MD5.Create();
-                var userDirectory = Convert.ToBase64String(
-                                            md5.ComputeHash(
-                                                Encoding.UTF8.GetBytes(email)));
+                var userId = _unitOfWork.UserRepository.GetItems().FirstOrDefault(u => u.UserEmail == email).UserId;
+                FileManager.LoadProfileImage(file, email);
 
-                var filePath = "wwwroot/" + userDirectory + "/" + file.FileName;
-
-                using (MemoryStream stream = new MemoryStream())
+                UFile profileImage = new UFile
                 {
-                    file.CopyTo(stream);
-                    stream.Position = 0;
-
-                    var image = Image.Load<Rgba32>(stream);
-                    image.SaveAsPng(filePath);
-                }
+                    UFileId = 0,
+                    UserId = userId,
+                    UFileName = file.FileName,
+                    UFileType = "Profile image"
+                };
+                _unitOfWork.UFileRepository.AddElement(profileImage);
+                _unitOfWork.SaveChanges();
 
                 return Ok("Пользователь создан");
             }
@@ -48,18 +69,6 @@ namespace WebApiServer.Controllers
             {
                 return Ok("Пользователь создан");
             }
-        }
-
-        // PUT api/<FileController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<FileController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

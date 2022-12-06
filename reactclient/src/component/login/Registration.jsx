@@ -10,7 +10,7 @@ import axios from 'axios';
 const RegistrationForm = (props) => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
-  const [registrationUser, setRegistrationUser] = useState({ lastName: '', name: '', email: '', password: '', birthDate: new Date(), sex: 'male', image: {} });
+  const [registrationUser, setRegistrationUser] = useState({ lastName: '', name: '', email: '', password: '', birthDate: new Date(), sex: 'Мужской', image: {} });
 
   const [registrationUserDirty, setRegistrationUserDirty] = useState({ lastNameDirty: false, nameDirty: false, emailDirty: false, passwordDirty: false });
   const [registrationUserError, setRegistrationUserError] = useState({ lastNameError: 'Фамилия не может быть пустой', nameError: 'Имя не может быть пустым', emailError: 'Email не может быть пустым', passwordError: 'Пароль не может быть пустым' });
@@ -325,8 +325,8 @@ const SecondStep = (props) => {
         <div className="col-md-10 offset-md-1">
           <div className="input-group">
             <select name="sex" className="form-select" selected={props.sex} onChange={e => props.setRegistrationUser({ ...props.registrationUser, sex: e.target.selected })}>
-              <option value="male">Мужской</option>
-              <option value="female">Женский</option>
+              <option value="Мужской">Мужской</option>
+              <option value="Женский">Женский</option>
             </select>
           </div>
         </div>

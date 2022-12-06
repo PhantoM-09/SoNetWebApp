@@ -30,24 +30,14 @@ namespace WebApiServer.Controllers
                 var validatedToken = _jwtService.Verify(jwtToken);
 
                 var userId = int.Parse(validatedToken.Issuer);
-                User foundUser = _unitOfWork.UserRepository.GetItem(userId);
-                SimpleUser user = new SimpleUser
-                {
-                    UserId = foundUser.UserId,
-                    UserLastName = foundUser.UserLastName,
-                    UserName = foundUser.UserName,
-                    UserBirthDay = foundUser.UserBirthDay,
-                    UserSex = foundUser.UserSex
-                };
 
-                return Ok(user);
+                //проверить на null может быть удален адмнистратором и сделать проверку в заблокированных
+                return Ok(JsonConverter.ConvertUser(userId, _unitOfWork));
             }
             catch(Exception ex)
             {
                 return Unauthorized(new {message = "Вы не авторизованы"});
             }
-
-
         }
     }
 }

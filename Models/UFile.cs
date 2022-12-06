@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 namespace Models
 {
     [Table("STRGFILE")]
-    [Index(nameof(UFileDrive), IsUnique = true)]
     public class UFile
     {
         [Column("FILEID")]
@@ -18,9 +17,6 @@ namespace Models
 
         [Column("FILENAME")]
         public string UFileName { get; set; }
-
-        [Column("FILEDRIVE")]
-        public string UFileDrive { get; set; }
 
         [Column("FILETYPE")]
         public string UFileType{ get; set; }

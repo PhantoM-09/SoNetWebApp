@@ -6,12 +6,18 @@ import { LOGIN_ROUTE } from '../../utils/consts';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ lastName: '', name: '', birthDate: new Date(), sex: '', image: '', friendsCount: 0, subscribersCount: 0 })
+  const [user, setUser] = useState({ lastName: '', name: '', birthDate: null, sex: '', country: null, city: null, profileImage: '', profileBackground: '', friendCount: 0, subscriberCount: 0 })
 
   useEffect(() => {
     axios.get('https://localhost:7132/api/user/get-user/', { withCredentials: true })
       .then(response => {
-        console.log(response.data);
+        var userInfo = response.data;
+        setUser({ ...user, lastName: userInfo.lastName, name: userInfo.name, sex: userInfo.sex, birthDate: userInfo.birthDate, friendsCount: userInfo.friendCount,  subscriberCount: userInfo.subscriberCount});
+      
+        axios.get('https://localhost:7132/api/file/get-profile-image/', { withCredentials: true })
+        .then(imageResponse => {
+          setUser({...user, profileImage: imageResponse.data.profileImage, profileBackground: imageResponse.data.profileBackground});
+        })
       })
       .catch(error => {
         if (error.response) {
@@ -39,14 +45,14 @@ const Profile = () => {
                     <div className="row-md">
                       <div className="col-md">
                         <div style={{ padding: '5%' }}>
-                          <img className="col-md-12" src="Hokage.png" style={{ border: '1px black solid', borderRadius: 8, height: 290, objectFit: 'cover' }} />
+                          <img className="col-md-12" src={user.profileImage} style={{ border: '1px black solid', borderRadius: 8, height: 290, objectFit: 'cover' }} />
                         </div>
                       </div>
                     </div>
                     <div className="row-md">
                       <div className="col-md-8 offset-md-2">
                         <div className="text-center" style={{ fontWeight: 'bold', fontSize: '14pt', marginBottom: -10 }}>
-                          {user.friendsCount}
+                          {user.friendCount}
                         </div>
                         <div className="text-center" style={{ fontSize: '14pt' }}>Друзья</div>
                       </div>
@@ -54,7 +60,7 @@ const Profile = () => {
                     <div className="row-md">
                       <div className="col-md-8 offset-md-2">
                         <div className="text-center" style={{ fontWeight: 'bold', fontSize: '14pt', marginBottom: -10 }}>
-                          {user.subscribersCount}
+                          {user.subscriberCount}
                         </div>
                         <div className="text-center" style={{ fontSize: '14pt' }}>Подписчики</div>
                       </div>
@@ -80,10 +86,7 @@ const Profile = () => {
               </div>
               <div className="col-md-6" style={{ marginTop: '40.2%', color: 'white', zIndex: 4000 }}>
                 <div className="row-md" style={{ fontSize: '20pt' }}>
-                  Стречко Станислав
-                </div>
-                <div className="row-md" style={{ fontSize: '12pt' }}>
-                  Онлайн
+                  {user.lastName + ' ' + user.name}
                 </div>
               </div>
             </div>
@@ -104,21 +107,51 @@ const Profile = () => {
             <div className="col-md-12">
               <div className="col-md-7 offset-md-6" style={{ zIndex: 4000, position: 'absolute', marginTop: '-13.6%', fontSize: '12pt' }}>
                 <div className="col-md-6 offset-md-4" style={{ border: '1px black solid', borderRadius: 8, marginLeft: '35.6%' }}>
+                <div className="row-md" style={{ fontSize: '12pt', marginLeft: '3%', marginTop: '1.3%' }}>
+                      <div className="col-md">
+                        {'Пол: ' + user.sex}
+                      </div>
+                    </div>
                   <div className="row-md" style={{ fontSize: '12pt', marginLeft: '3%', marginTop: '1.3%' }}>
                     <div className="col-md">
-                      Дата рождения: 26.09.2001
+                      {user.birthDate === null ?
+                        (null)
+                        :
+                        (
+                          'Дата рождения: ' + user.birthDate
+                        )}
                     </div>
                   </div>
-                  <div className="row-md" style={{ fontSize: '12pt', marginLeft: '3%', marginTop: '1.3%' }}>
-                    <div className="col-md">
-                      Страна: Беларусь
+
+                  <div>
+                    <div className="row-md" style={{ fontSize: '12pt', marginLeft: '3%', marginTop: '1.3%' }}>
+                      <div className="col-md">
+                        {user.country === null ?
+                          (null)
+                          :
+                          (
+                            'Страна: ' + user.country
+                          )}
+                      </div>
                     </div>
                   </div>
-                  <div className="row-md" style={{ fontSize: '12pt', marginLeft: '3%', marginBottom: '12%', marginTop: '1.3%' }}>
-                    <div className="col-md">
-                      Город: Минск
+
+
+
+                  <div>
+                    <div className="row-md" style={{ fontSize: '12pt', marginLeft: '3%', marginTop: '1.3%', marginBottom: '1.3%' }}>
+                      <div className="col-md">
+                        {user.city === null ?
+                          (null)
+                          :
+                          (
+                            'Город: ' + user.city
+                          )}
+                      </div>
                     </div>
                   </div>
+
+
                 </div>
               </div>
             </div>
