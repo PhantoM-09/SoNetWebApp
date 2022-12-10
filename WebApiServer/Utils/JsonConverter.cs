@@ -6,10 +6,8 @@ namespace WebApiServer.Utils
 {
     public class JsonConverter
     {
-        public static string ConvertUser(int userId, UnitOfWork unitOfWork)
+        public static string ConvertUser(User user, UnitOfWork unitOfWork)
         {
-            User user = unitOfWork.UserRepository.GetItem(userId);
-
             JsonObject jsonUser = new JsonObject();
             jsonUser.Add("lastName", user.UserLastName);
             jsonUser.Add("name", user.UserName);
@@ -37,17 +35,25 @@ namespace WebApiServer.Utils
 
         public static string ConverProfileImages(int userId, UnitOfWork unitOfWork)
         {
+            var user = unitOfWork.UserRepository.GetItem(userId);
+
             var profileImage = unitOfWork.UFileRepository.GetItems().FirstOrDefault(uf => uf.UserId == userId && string.Equals(uf.UFileType, "Profile image"));
             var profileImagePath = "standard_files/standard_profile_image.png";
             if(profileImage != null)
             {
-                profileImagePath = FileManager.GetImagePath(profileImage.User.UserEmail, profileImage.UFileName);
+                profileImagePath = FileManager.GetImagePath(user.UserEmail, profileImage.UFileName);
             }
 
-            //var profileBackground = unitOfWork.UFileRepository.GetItems().FirstOrDefault(uf => uf.UserId == userId && string.Equals(uf.UFileType, "Profile background"));
+            var profileBackground = unitOfWork.UFileRepository.GetItems().FirstOrDefault(uf => uf.UserId == userId && string.Equals(uf.UFileType, "Profile background"));
+            var profileBackgroundPath = "standard_files/standard_profile_background.png";
+            if (profileBackground != null)
+            {
+                profileBackgroundPath = FileManager.GetImagePath(user.UserEmail, profileBackground.UFileName);
+            }
 
             JsonObject jsonImages = new JsonObject();
             jsonImages.Add("profileImage", profileImagePath);
+            jsonImages.Add("profileBackground", profileBackgroundPath);
 
             string json = jsonImages.ToJsonString();
             return json;

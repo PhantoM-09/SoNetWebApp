@@ -5,43 +5,46 @@ import { Context } from '..';
 import { authRoutes, publicRoutes } from '../routes';
 import { LOGIN_ROUTE } from '../utils/consts';
 import axios from 'axios'
+import Main from './Main';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const AppRouter = observer(() => {
     const { user } = useContext(Context);
 
     useEffect(() => {
         axios.get('https://localhost:7132/api/user/get-user/', { withCredentials: true })
-            .then(response => {
+            .then(() => {
                 user.setAuth(true);
                 user.setStart(true);
-                console.log(user.isStart);
             })
-            .catch(error => {
+            .catch(() => {
                 user.setStart(true);
-                console.log(user.isStart);
             })
     }, [])
 
     return (
         <div>
-            {user.isStart ?
-                (<Routes>
-                    {user.isAuth && authRoutes.map(({ path, Component }) =>
-                        <Route key={path} path={path} element={Component} exact />
-                    )}
-                    {publicRoutes.map(({ path, Component }) =>
-                        <Route key={path} path={path} element={Component} exact />
-                    )}
-                    <Route path="*" element={<Navigate to={LOGIN_ROUTE} />} />
+            <Main />
+            <div style={{ marginTop: '3.2%' }}>
+                {user.isStart ?
+                    (<Routes>
+                        {user.isAuth && authRoutes.map(({ path, Component }) =>
+                            <Route key={path} path={path} element={Component} exact />
+                        )}
+                        {publicRoutes.map(({ path, Component }) =>
+                            <Route key={path} path={path} element={Component} exact />
+                        )}
+                        <Route path="*" element={<Navigate to={LOGIN_ROUTE} />} />
 
-                </Routes>)
-                :
-                (null)
-            }
+                    </Routes>)
+                    :
+                    (null)
+                }
+            </div>
+            <ToastContainer />
 
         </div>
-
-
     );
 });
 

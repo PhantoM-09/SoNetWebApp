@@ -3,7 +3,7 @@ import React, {useState} from "react";
 const MenuUser = () =>{
     return(
         <div className="col-md-2">
-        <div className="row">
+        <div className="row" style={{position: 'fixed'}}>
             <div className="col-md-12">
             <div className="d-flex align-items-left">
             <div className="nav nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">

@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { Context } from '../..';
 import MenuAdmin from './admin/MenuAdmin';
 import MenuUser from './MenuUser'
-import Profile from './Profile';
+import Profile from './profile/Profile';
 
 const MainFunctionality = () => {
     const {user} = useContext(Context);

@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "../..";
 import { PROFILE_ROUTE, REGISTRATION_ROUTE } from "../../utils/consts";
 import { toast } from 'react-toastify';
+import { observer } from "mobx-react-lite";
 
-const LoginForm = () => {
+const LoginForm = observer(() => {
     const navigate = useNavigate();
     const {user} = useContext(Context);
 
@@ -87,7 +88,7 @@ const LoginForm = () => {
             .catch(error => {
                 if (error.response) {
                     toast.error(error.response.data.message, {
-                        position: toast.POSITION.TOP_RIGHT,
+                        position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 2000,
                         pauseOnFocusLoss: false
                     });
@@ -133,6 +134,6 @@ const LoginForm = () => {
             </div>
         </form>
     );
-};
+});
 
 export default LoginForm;

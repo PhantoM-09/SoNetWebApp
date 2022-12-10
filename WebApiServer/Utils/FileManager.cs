@@ -9,7 +9,7 @@ namespace WebApiServer.Utils
     {
         public static void LoadProfileImage(IFormFile file, string email)
         {
-            var filePath = "wwwroot/" + GetImagePath(email, file.Name);
+            var filePath = "wwwroot/" + GetImagePath(email, file.FileName);
 
             using (MemoryStream stream = new MemoryStream())
             {

@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LOGIN_ROUTE, PROFILE_ROUTE } from "../../utils/consts";
 import LoginForm from "./Login";
 import RegistrationForm from "./Registration";
-import { ToastContainer } from 'react-toastify';
 import { useContext } from "react";
 import { Context } from "../..";
 
@@ -24,7 +23,7 @@ const AuthForm = () => {
         {
             setAuth(true);
         }
-    })
+    }, [])
     return (
         <div className="container">
             <div className="row" style={{ marginTop: 20 }}>
@@ -34,7 +33,6 @@ const AuthForm = () => {
                             <img className="col-md-8 offset-md-2" src="logo-symbol.png" style={{ marginTop: 30 }} />
                         </div>
                     </div>
-                    <ToastContainer />
                     {
                         auth ?
                             (<div>

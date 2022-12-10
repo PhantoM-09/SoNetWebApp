@@ -84,5 +84,22 @@ namespace WebApiServer.Controllers
             else
                 return Ok("Admin");
         }
+
+        [Route("logout")]
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            if (Request.Cookies["jwt"] != null)
+            {
+                Response.Cookies.Append("jwt", "", new CookieOptions
+                {
+                    Expires = DateTime.Now.AddDays(-1d),
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                    Secure = true
+                });
+            }
+            return Ok();
+        }
     }
 }

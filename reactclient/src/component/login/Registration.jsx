@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_ROUTE } from "../../utils/consts";
-import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
 
 const RegistrationForm = (props) => {
@@ -44,15 +43,16 @@ const RegistrationForm = (props) => {
         axios.post('https://localhost:7132/api/file/add-profile-image', userFile, {withCredentials: true})
           .then(imageResponse => {
             toast.success(imageResponse.data, {
-              position: toast.POSITION.TOP_RIGHT,
+              position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: 2000,
               pauseOnFocusLoss: false
-            })
+            });
+            navigate(LOGIN_ROUTE);
           })
           .catch(imageError => {
             if (imageError.response) {
               toast.error(imageError.response.data.message, {
-                position: toast.POSITION.TOP_RIGHT,
+                position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: 2000,
                 pauseOnFocusLoss: false
               });
@@ -62,7 +62,7 @@ const RegistrationForm = (props) => {
       .catch(userError => {
         if (userError.response) {
           toast.error(userError.response.data.message, {
-            position: toast.POSITION.TOP_RIGHT,
+            position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: 2000,
             pauseOnFocusLoss: false
           });
