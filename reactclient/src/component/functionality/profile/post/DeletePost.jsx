@@ -1,26 +1,39 @@
-import { Modal } from 'bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import React from 'react';
+import axios from 'axios';
+
+
 const DeletePost = (props) => {
 
-
+    const deletePost = (e) => {
+        e.preventDefault();
+        axios.delete('https://localhost:7132/api/post/delete-post/' + props.deletedPost.postId, { withCredentials: true })
+            .then(response => {
+                props.setPosts(response.data);
+                props.onHide();
+            })
+    }
     return (
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Заголовок модального окна</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-              <button type="button" class="btn btn-primary">Сохранить изменения</button>
-            </div>
-          </div>
-        </div>
-      </div>
+        <Modal
+            size='lg'
+            centered
+            show={props.show}
+            onHide={props.onHide}
+            style={{ zIndex: 500000000 }}>
+            <Modal.Header id='contained-model-title-vcenter'>
+                <div style={{ fontSize: '16pt' }}>
+                    Удалить публикацию?
+                </div>
+            </Modal.Header>
+            <Modal.Body>
+                <form onSubmit={deletePost}>
+                    <div className='d-flex justify-content-end'>
+                        <button className='btn btn-secondary' style={{ marginRight: '1%' }} onClick={() => props.onHide()} type="button">Отмена</button>
+                        <button className='btn btn-danger' type="submit">Удалить</button>
+                    </div>
+                </form>
+            </Modal.Body>
+        </Modal>
     );
 }
 

@@ -21,8 +21,9 @@ namespace WebApiServer.Controllers
             this._jwtService = jwtService;
         }
 
-        [HttpGet("get-user")]
-        public IActionResult Get()
+        [Route("get-user")]
+        [HttpGet]
+        public IActionResult GetUser()
         {
             try
             {
@@ -48,6 +49,24 @@ namespace WebApiServer.Controllers
             catch(Exception ex)
             {
                 return Unauthorized(new {message = "Вы не авторизованы"});
+            }
+        }
+
+        [Route("get-users")]
+        [HttpGet]
+        public IActionResult GetUsers()
+        {
+            try
+            {
+                var jwtToken = Request.Cookies["jwt"];
+                var validatedToken = _jwtService.Verify(jwtToken);
+                var userId = int.Parse(validatedToken.Issuer);
+
+                return Ok(JsonConverter.ConvertOtherUser(userId, _unitOfWork));
+            }
+            catch(Exception ex)
+            {
+                return Unauthorized(new { message = "Вы не авторизованы" });
             }
         }
     }

@@ -53,5 +53,6 @@ namespace Models
         public virtual ICollection<UFile> Files { get; set; }
         public virtual ICollection<Friend> RelationSend { get; set; }
         public virtual ICollection<Friend> RelationReceive { get; set; }
+        public virtual ICollection<Like> Likes { get; set; }
     }
 }

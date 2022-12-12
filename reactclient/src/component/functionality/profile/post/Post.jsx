@@ -2,20 +2,26 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 import DeletePost from "./DeletePost";
+import LikeCounter from "./LikeCounter";
+import UpdatePost from "./UpdatePost";
 
 const Post = (props) => {
     const [posts, setPosts] = useState([]);
     const [postText, setPostText] = useState("");
+
     const [deletePostVisible, setDeletePostVisible] = useState(false);
+    const [deletedPost, setDeletedPost] = useState({});
+
+    const [updatePostVisible, setUpdatePostVisible] = useState(false);
+    const [updatedPost, setUpdatedPost] = useState({});
 
     useEffect(() => {
         axios.get('https://localhost:7132/api/post/get-posts/', { withCredentials: true })
             .then(postResponse => {
                 setPosts(postResponse.data);
-                console.log(posts);
             })
     }, [])
-    
+
     const addPost = () => {
         if (postText.length === 0) {
             toast.error("Публикация не может быть пустой", {
@@ -42,7 +48,7 @@ const Post = (props) => {
     return (
         <div>
             <div className="row">
-                <div className="col-md-5" style={{ border: '1px black solid', borderRadius: 8, zIndex: 4000, position: 'absolute', marginLeft: '28.9%', marginTop: '-13.6%', fontSize: '12pt' }}>
+                <div className="col-md-5" style={{ border: '1px black solid', borderRadius: 8, zIndex: 450, position: 'absolute', marginLeft: '28.9%', marginTop: '-13.6%', fontSize: '12pt' }}>
                     <div className="row-md">
                         <div className="input-group">
                             <input type="text" name="postText" value={postText} onChange={e => setPostText(e.target.value)} className="form-control flex-wrap text-break text-wrap" placeholder="Напишите о своих новостях" aria-label="AddNews" aria-describedby="basic-addon1" style={{ marginTop: '3%', paddingBottom: '4%' }} />
@@ -53,7 +59,24 @@ const Post = (props) => {
                     </div>
                 </div>
             </div>
-            <div className="col-md-5" style={{ zIndex: 4000, position: 'absolute', marginLeft: '27.8%', marginTop: '-2%' }}>
+            {<DeletePost
+                show={deletePostVisible}
+                onHide={() => setDeletePostVisible(false)}
+                deletedPost={deletedPost}
+                setPosts={setPosts}
+            />
+            }
+            {<UpdatePost
+                show={updatePostVisible}
+                onHide={() => setUpdatePostVisible(false)}
+                updatedPost={updatedPost}
+                setUpdatedPost={setUpdatedPost}
+                setPosts={setPosts}
+                user={props.user}
+            />
+            }
+
+            <div className="col-md-5" style={{ zIndex: 400, position: 'absolute', marginLeft: '27.8%', marginTop: '-2%' }}>
                 {posts?.map((post) => (
 
                     <div key={post.postId} className="col-md-12" style={{ border: '1px black solid', borderRadius: 8, fontSize: '12pt', marginTop: '2%' }}>
@@ -71,8 +94,9 @@ const Post = (props) => {
                             </div>
                             <div className="col-md-2 d-inline-block">
                                 <div className="col-md">
-                                    <button className="btn btn-primary" style={{ fontSize: '12pt', marginLeft: '35%', marginTop: '-30%' }}>Редактировать</button>
-                                    <button className="btn btn-primary" style={{ fontSize: '12pt', marginLeft: '17%', position: 'absolute', zIndex: 10000, marginTop: '1%' }} data-bs-toggle="modal" data-bs-target="#exampleModal">Удалить</button>
+                                    <button className="btn btn-primary" style={{ fontSize: '12pt', marginLeft: '35%', marginTop: '-30%' }} onClick={() => { setUpdatedPost(post); setUpdatePostVisible(true) }}>Редактировать</button>
+                                    <button className="btn btn-primary" style={{ fontSize: '12pt', marginLeft: '17%', position: 'absolute', zIndex: 10000, marginTop: '1%' }} onClick={() => { setDeletedPost(post); setDeletePostVisible(true) }}>Удалить</button>
+
                                 </div>
                             </div>
                         </div>
@@ -82,12 +106,11 @@ const Post = (props) => {
                             </div>
                         </div>
                         <div className="row" style={{ marginTop: '3%', marginBottom: '1.5%' }}>
-                            <div className="col-md-10" style={{ marginLeft: '2.2%' }}>
-                                <img src="free-icon-heart-shape-outline-25424.png" style={{ width: 20, height: 20, cursor: 'pointer' }} />
-                                <span style={{ fontSize: '12pt', marginLeft: '1%' }}>
-                                    {post.postLikeAmount}
-                                </span>
-                            </div>
+                            <LikeCounter
+                                post={post}
+                                updatedPost={updatedPost}
+                                setPosts={setPosts}
+                            />
                             <div className="col-md">
                                 <img src="free-icon-comment-4991361.png" style={{ width: 20, height: 20, cursor: 'pointer', marginLeft: '13%' }} />
                             </div>

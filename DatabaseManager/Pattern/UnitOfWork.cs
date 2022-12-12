@@ -24,6 +24,7 @@ namespace DatabaseManager.Pattern
         private MessageRepository _messageRepository;
         private UFileRepository _ufileRepository;
         private FriendRepository _friendRepository;
+        private LikeRepository _likeRepository;
 
         public AddressRepository AddressRepository
         {
@@ -102,6 +103,16 @@ namespace DatabaseManager.Pattern
                 if (_friendRepository == null)
                     _friendRepository = new FriendRepository(_context);
                 return _friendRepository;
+            }
+        }
+
+        public LikeRepository LikeRepository
+        {
+            get
+            {
+                if (_likeRepository == null)
+                    _likeRepository = new LikeRepository(_context);
+                return _likeRepository;
             }
         }
 

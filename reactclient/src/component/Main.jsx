@@ -36,7 +36,7 @@ const Main = observer(() => {
 
   return (
     <div>
-      <div className="container-md-12" style={{ background: 'lightblue', position: 'fixed', width: '100%', top:0, zIndex: 30000 }}>
+      <div className="container-md-12" style={{ background: '#6FBCF8', position: 'fixed', width: '100%', top:0, zIndex: 600 }}>
         <div className="container">
           <div className="row" style={{ height: 53 }}>
             <div className="col-md">

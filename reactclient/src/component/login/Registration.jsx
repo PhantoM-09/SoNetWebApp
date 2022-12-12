@@ -336,7 +336,7 @@ const SecondStep = (props) => {
 }
 
 const ThirdStep = (props) => {
-  const [image, setImage] = useState("https://localhost:7132/StandardFiles/StandardProfileImage.png");
+  const [image, setImage] = useState("https://localhost:7132/standard_files/standard_profile_image.png");
 
   const handleChangeFile = (event) => {
     var file = event.target.files[0];

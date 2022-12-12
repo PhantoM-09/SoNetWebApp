@@ -20,13 +20,11 @@ namespace Models
         [Column("POSTPUBLICATION")]
         public DateTime PostPublication { get; set; }
 
-        [Column("POSTLIKEAMOUNT")]
-        public int PostLikeAmount { get; set; }
-
         [Column("USERID")]
         public int UserId { get; set; }
 
         public virtual User User { get; set; } 
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Like> Likes { get; set; }
     }
 }

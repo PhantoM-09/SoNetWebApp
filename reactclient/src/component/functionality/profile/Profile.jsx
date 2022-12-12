@@ -77,14 +77,14 @@ const Profile = () => {
                 <div className="col-md-12">
                   <div className="row-md">
                     <div className="col-md">
-                      <div style={{ paddingTop: '4%', zIndex: 8000, position: 'relative' }}>
+                      <div style={{ paddingTop: '4%', zIndex: 450, position: 'relative' }}>
                         <div className="btn col-md-12" style={{ fontSize: '12pt', border: '1px black solid', borderRadius: 8 }}>Друзья</div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="col-md-6" style={{ marginTop: '40.2%', color: 'white', zIndex: 4000 }}>
+              <div className="col-md-6" style={{ marginTop: '40.2%', color: 'white', zIndex: 400 }}>
                 <div className="row-md" style={{ fontSize: '20pt' }}>
                   {user.lastName + ' ' + user.name}
                 </div>
@@ -97,7 +97,7 @@ const Profile = () => {
             user={user}
           />
           <div className="col-md-12">
-            <div className="col-md-7 offset-md-6" style={{ zIndex: 4000, position: 'absolute', marginTop: '-13.6%', fontSize: '12pt' }}>
+            <div className="col-md-7 offset-md-6" style={{ zIndex: 400, position: 'absolute', marginTop: '-13.6%', fontSize: '12pt' }}>
               <div className="col-md-6 offset-md-4" style={{ border: '1px black solid', borderRadius: 8, marginLeft: '35.6%' }}>
                 <div className="row-md" style={{ fontSize: '12pt', marginLeft: '3%', marginTop: '1.3%' }}>
                   <div className="col-md">
