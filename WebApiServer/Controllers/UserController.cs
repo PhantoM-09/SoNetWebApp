@@ -9,7 +9,7 @@ using WebApiServer.Utils;
 
 namespace WebApiServer.Controllers
 {
-    [Route("api/user")]
+    [Route("api/user/")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -20,6 +20,49 @@ namespace WebApiServer.Controllers
             this._unitOfWork = unitOfWork;
             this._jwtService = jwtService;
         }
+
+        [Route("get-users")]
+        [HttpGet]
+        public IActionResult GetUsers()
+        {
+            try
+            {
+                var jwtToken = Request.Cookies["jwt"];
+                var validatedToken = _jwtService.Verify(jwtToken);
+
+                var userId = int.Parse(validatedToken.Issuer);
+                var user = _unitOfWork.UserRepository.GetItem(userId);
+
+                return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u=> !string.Equals(u.UserType, "Admin")), _unitOfWork));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new { message = "Вы не авторизованы" });
+            }
+        }
+
+        [Route("delete-user")]
+        [HttpPost]
+        public IActionResult DeleteUser()
+        {
+            try
+            {
+                var jwtToken = Request.Cookies["jwt"];
+                var validatedToken = _jwtService.Verify(jwtToken);
+
+                var userId = Request.Form["userId"];
+
+                _unitOfWork.UserRepository.DeleteElement(int.Parse(userId));
+                _unitOfWork.SaveChanges();
+
+                return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u => !string.Equals(u.UserType, "Admin")), _unitOfWork));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new { message = "Вы не авторизованы" });
+            }
+        }
+
 
         [Route("get-user")]
         [HttpGet]
@@ -52,9 +95,9 @@ namespace WebApiServer.Controllers
             }
         }
 
-        [Route("get-users")]
+        [Route("get-strange-user/{id}")]
         [HttpGet]
-        public IActionResult GetUsers()
+        public IActionResult GetStrangeUser(int id)
         {
             try
             {
@@ -62,9 +105,14 @@ namespace WebApiServer.Controllers
                 var validatedToken = _jwtService.Verify(jwtToken);
                 var userId = int.Parse(validatedToken.Issuer);
 
-                return Ok(JsonConverter.ConvertOtherUser(userId, _unitOfWork));
+                var strangeUser = _unitOfWork.UserRepository.GetItem(id);
+
+                if (strangeUser == null)
+                    return NotFound(new { message = "Данного пользователя не существует" });
+
+                return Ok(JsonConverter.ConvertStrangeUser(userId, strangeUser, _unitOfWork));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Unauthorized(new { message = "Вы не авторизованы" });
             }

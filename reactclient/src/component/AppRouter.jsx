@@ -14,8 +14,11 @@ const AppRouter = observer(() => {
 
     useEffect(() => {
         axios.get('https://localhost:7132/api/user/get-user/', { withCredentials: true })
-            .then(() => {
+            .then(response => {
                 user.setAuth(true);
+                if (response.data.type === "Admin") {
+                    user.setAdmin(true);
+                }
                 user.setStart(true);
             })
             .catch(() => {

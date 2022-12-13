@@ -42,6 +42,25 @@ namespace WebApiServer.Controllers
 
         }
 
+        [Route("get-strange-posts/{id}")]
+        [HttpGet]
+        public IActionResult GetStrangePosts(int id)
+        {
+            try
+            {
+                var jwtToken = Request.Cookies["jwt"];
+                var validatedToken = _jwtService.Verify(jwtToken);
+
+                List<Post> posts = new List<Post>(_unitOfWork.PostRepository.GetItems().Where(p => p.UserId == id).OrderByDescending(post => post.PostPublication));
+                return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new { message = "Вы не авторизованы" });
+            }
+
+        }
+
         [Route("add-post")]
         [HttpPost]
         public IActionResult AddPost([FromBody]SimplePost post)

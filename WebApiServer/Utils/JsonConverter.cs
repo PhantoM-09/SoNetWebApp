@@ -33,6 +33,43 @@ namespace WebApiServer.Utils
             return json;
         }
 
+        public static string ConvertStrangeUser(int userId, User strangeUser, UnitOfWork unitOfWork)
+        {
+            JsonObject jsonUser = new JsonObject();
+            jsonUser.Add("lastName", strangeUser.UserLastName);
+            jsonUser.Add("name", strangeUser.UserName);
+            jsonUser.Add("sex", strangeUser.UserSex);
+            jsonUser.Add("birthDate", strangeUser.UserBirthDay != null ? strangeUser.UserBirthDay.Value.ToShortDateString() : null);
+
+            jsonUser.Add("friendCount", unitOfWork.FriendRepository.GetItems()
+                                                    .Where(f => f.UserId == strangeUser.UserId && f.FriendRelation == 1)
+                                                            .Count());
+            jsonUser.Add("subscriberCount", unitOfWork.FriendRepository.GetItems()
+                                                    .Where(f => f.UserId == strangeUser.UserId && f.FriendRelation == 0)
+                                                            .Count());
+
+            var userAddress = unitOfWork.AddressRepository.GetItem(strangeUser.UserId);
+            if (userAddress != null)
+            {
+                jsonUser.Add("country", userAddress.AddressCountry);
+                jsonUser.Add("city", userAddress.AddressCity);
+            }
+
+            var relation = unitOfWork.FriendRepository.GetItem(userId, strangeUser.UserId);
+            if (relation == null)
+                jsonUser.Add("type", "other");
+            else
+            {
+                if (relation.FriendRelation == 1)
+                    jsonUser.Add("type", "friend");
+                else
+                    jsonUser.Add("type", "subscriber");
+            }
+
+            string json = jsonUser.ToJsonString();
+            return json;
+        }
+
         public static string ConverProfileImages(int userId, UnitOfWork unitOfWork)
         {
             var user = unitOfWork.UserRepository.GetItem(userId);
@@ -58,10 +95,8 @@ namespace WebApiServer.Utils
             string json = jsonImages.ToJsonString();
             return json;
         }
-        public static string ConvertOtherUser(int userId, UnitOfWork unitOfWork)
+        public static string ConvertOtherUser(IEnumerable<User> users, UnitOfWork unitOfWork)
         {
-            var users = unitOfWork.UserRepository.GetItems().Where(u => u.UserId != userId);
-
             JsonArray jsonUsers = new JsonArray();
             foreach(var item in users)
             {

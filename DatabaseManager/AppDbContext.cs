@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace DatabaseManager
 {
@@ -45,6 +47,21 @@ namespace DatabaseManager
             modelBuilder.Entity<User>().HasMany(u => u.Likes).WithOne(l => l.User).HasForeignKey(l => l.UserId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Post>().HasMany(p => p.Comments).WithOne(c => c.Post).HasForeignKey(c => c.PostId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Post>().HasMany(p => p.Likes).WithOne(l => l.Post).HasForeignKey(l => l.PostId).OnDelete(DeleteBehavior.NoAction);
+
+            MD5 md5 = MD5.Create();
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                UserId = 1,
+                UserEmail = "admin@mail.ru",
+                UserPassword = Convert.ToBase64String(
+                                        md5.ComputeHash(
+                                            Encoding.UTF8.GetBytes("1122"))),
+                UserLastName = "Главный",
+                UserName = "Администратор",
+                UserSex = "мужской",
+                UserBirthDay = new DateTime(2001, 9, 26),
+                UserType = "Admin"
+            });
         }
     }
 }

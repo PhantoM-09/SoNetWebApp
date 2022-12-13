@@ -7,6 +7,9 @@ import SearchFriend from './SearchFriend';
 
 const Friend = () => {
   const [currentTab, setCurrentTab] = useState(1);
+
+  
+
   return (
     <div className="col-md-10">
       <div className='col-md'>

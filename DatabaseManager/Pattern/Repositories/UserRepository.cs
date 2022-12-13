@@ -32,7 +32,7 @@ namespace DatabaseManager.Pattern.Repositories
 
         public IEnumerable<User> GetItems()
         {
-            return _context.Users.AsNoTracking().ToList();
+            return _context.Users.Include(u=>u.RelationSend).Include(u=>u.RelationReceive).AsNoTracking().ToList();
         }
 
         public void UpdateElement(User item)

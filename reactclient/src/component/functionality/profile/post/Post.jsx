@@ -95,7 +95,8 @@ const Post = (props) => {
                             <div className="col-md-2 d-inline-block">
                                 <div className="col-md">
                                     <button className="btn btn-primary" style={{ fontSize: '12pt', marginLeft: '35%', marginTop: '-30%' }} onClick={() => { setUpdatedPost(post); setUpdatePostVisible(true) }}>Редактировать</button>
-                                    <button className="btn btn-primary" style={{ fontSize: '12pt', marginLeft: '17%', position: 'absolute', zIndex: 10000, marginTop: '1%' }} onClick={() => { setDeletedPost(post); setDeletePostVisible(true) }}>Удалить</button>
+                                    <button className="btn btn-primary" style={{ fontSize: '12pt', marginLeft: '17%', position: 'absolute', zIndex: 10000, marginTop: '1%' }}
+                                     onClick={() => { setDeletedPost(post); setDeletePostVisible(true) }}>Удалить</button>
 
                                 </div>
                             </div>
@@ -108,7 +109,6 @@ const Post = (props) => {
                         <div className="row" style={{ marginTop: '3%', marginBottom: '1.5%' }}>
                             <LikeCounter
                                 post={post}
-                                updatedPost={updatedPost}
                                 setPosts={setPosts}
                             />
                             <div className="col-md">

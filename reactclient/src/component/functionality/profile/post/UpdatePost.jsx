@@ -2,9 +2,11 @@ import { Modal, Button } from 'react-bootstrap';
 import React from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
 
 
 const UpdatePost = (props) => {
+
     const updatePost = (e) => {
         e.preventDefault();
 
@@ -63,18 +65,6 @@ const UpdatePost = (props) => {
                                 </div>
                             </div>
                             <div className="row" style={{ marginTop: '3%', marginBottom: '1.5%' }}>
-                                <div className="col-md-10" style={{ marginLeft: '1%' }}>
-                                    {props.updatedPost.postLikeAmount > 0
-                                     ? 
-                                     (<img src="red-heart.png" style={{ width: 20, height: 17.2}} />)
-                                     :
-                                     (<img src="black-heart.png" style={{ width: 20, height: 17.2}} />)
-                                    }
-                                    
-                                    <span style={{ fontSize: '12pt', marginLeft: '1%' }}>
-                                        {props.updatedPost.postLikeAmount}
-                                    </span>
-                                </div>
                             </div>
                         </div>
                     </div>

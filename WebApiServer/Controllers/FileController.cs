@@ -38,6 +38,23 @@ namespace WebApiServer.Controllers
             }
         }
 
+        [Route("get-strange-profile-image/{id}")]
+        [HttpGet]
+        public IActionResult GetStrangeProfileImages(int id)
+        {
+            try
+            {
+                var jwtToken = Request.Cookies["jwt"];
+                var validatedToken = _jwtService.Verify(jwtToken);
+
+                return Ok(JsonConverter.ConverProfileImages(id, _unitOfWork));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new { message = "Вы не авторизованы" });
+            }
+        }
+
         // POST api/send-file
         [Route("add-profile-image")]
         [HttpPost]
