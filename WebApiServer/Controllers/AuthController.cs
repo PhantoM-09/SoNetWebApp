@@ -71,6 +71,13 @@ namespace WebApiServer.Controllers
             if (!string.Equals(foundUser.UserPassword, Convert.ToBase64String(md5.ComputeHash(Encoding.UTF8.GetBytes(password)))))
                 return BadRequest(new { message = "Неверный пароль" });
 
+            if(foundUser.BlockId != null)
+            {
+                var userBlock = _unitOfWork.BlockRepository.GetItem(foundUser.BlockId.Value);
+                var blockedMessage = "Вы были заблокированы. Причина: " + userBlock.BlockReason;
+                return BadRequest(new { message = blockedMessage });
+            }
+
             var jwt = _jwtService.GenerateToken(foundUser.UserId, foundUser.UserType);
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {

@@ -18,10 +18,10 @@ namespace Models
         public string BlockReason { get; set; }
 
         [Column("BLOCKSTART")]
-        public DateTime BLockStart { get; set; }
+        public DateTime BlockStart { get; set; }
 
         [Column("BLOCKEND")]
-        public DateTime BLockEnd { get; set; }
+        public DateTime BlockEnd { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
     }

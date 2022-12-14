@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Tab, Nav, Col, Row } from 'react-bootstrap';
-import AllUsers from './AllUsers';
-import BlockedUsers from './BlockedUsers';
+import Administration from './administration/Administration';
+import DeleteUsers from './administration/Administration';
+import BlockedUsers from './administration/block/BlockedUsers';
 
 const Control = () =>{
     const [currentTab, setCurrentTab] = useState(1);
@@ -16,13 +17,23 @@ const Control = () =>{
                       <Nav.Item>
                         <Nav.Link eventKey="first" onClick={() => setCurrentTab(1)}>Пользователи</Nav.Link>
                       </Nav.Item>
+                      <Nav.Item>
+                        <Nav.Link eventKey="second" onClick={() => setCurrentTab(2)}>Журнал блокировок</Nav.Link>
+                      </Nav.Item>
                     </Nav>
                   </Col>
                   <Col sm={9}>
                     <Tab.Content>
                       <Tab.Pane eventKey="first">
                       {currentTab === 1 ?
-                          (<AllUsers/>)
+                          (<Administration/>)
+                          :
+                          (null)
+                        }
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="second">
+                      {currentTab === 2 ?
+                          (<BlockedUsers/>)
                           :
                           (null)
                         }

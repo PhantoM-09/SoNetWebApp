@@ -26,7 +26,7 @@ const MenuUser = () => {
                 <div className="row" style={{ position: 'fixed' }}>
                     <div className="col-md-12">
                         <div className="d-flex align-items-left">
-                            <div className="nav nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <div className="nav nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <button ref={profileButton} className="nav-link active col-md-12" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true" onClick={() => navigate(PROFILE_ROUTE)}>
                                     <div style={{ fontSize: '12pt', marginLeft: '-2em' }}>
                                         Мой профиль
