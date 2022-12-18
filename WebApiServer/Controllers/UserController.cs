@@ -30,10 +30,26 @@ namespace WebApiServer.Controllers
                 var jwtToken = Request.Cookies["jwt"];
                 var validatedToken = _jwtService.Verify(jwtToken);
 
-                var userId = int.Parse(validatedToken.Issuer);
-                var user = _unitOfWork.UserRepository.GetItem(userId);
-
                 return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u=> !string.Equals(u.UserType, "Admin")), _unitOfWork));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new { message = "Вы не авторизованы" });
+            }
+        }
+
+        [Route("get-all-users")]
+        [HttpGet]
+        public IActionResult GetAllUsers()
+        {
+            try
+            {
+                var jwtToken = Request.Cookies["jwt"];
+                var validatedToken = _jwtService.Verify(jwtToken);
+
+                var userId = int.Parse(validatedToken.Issuer);
+
+                return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u=>u.UserId != userId), _unitOfWork));
             }
             catch (Exception ex)
             {

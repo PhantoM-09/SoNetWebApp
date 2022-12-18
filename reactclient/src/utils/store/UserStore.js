@@ -3,10 +3,15 @@ import { makeAutoObservable } from "mobx";
 
 class UserStore {
     constructor() {
+        this._userId = 0
         this._isAuth = false
         this._isAdmin = false
         this._start = false
         makeAutoObservable(this);
+    }
+
+     setUserId(id) {
+        this._userId = id;
     }
 
     setAuth(bool) {
@@ -19,6 +24,10 @@ class UserStore {
 
     setStart(start) {
         this._start = start;
+    }
+
+    get userId() {
+        return this._userId;
     }
 
     get isAuth() {

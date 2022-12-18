@@ -3,6 +3,7 @@ using DatabaseManager.Pattern;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using WebApiServer.Utils;
+using WebApiServer.Utils.Chat.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,8 @@ builder.Services.Configure<FormOptions>(options =>
     options.ValueLengthLimit = int.MaxValue; //not recommended value
     options.MultipartBodyLengthLimit = long.MaxValue; //not recommended value
 });
+
+builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
 {
@@ -58,6 +61,12 @@ app.UseCors("CORSPolicy");
 
 app.UseStaticFiles();
 app.UseAuthorization();
+
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chat");
+});
 
 app.MapControllers();
 

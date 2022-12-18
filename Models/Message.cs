@@ -20,6 +20,9 @@ namespace Models
         [Column("MESSAGECREATE")]
         public DateTime MessageCreate { get; set; }
 
+        [Column("MESSAGEGROUPNAME")]
+        public string MessageGroupName { get; set; }
+
         [Column("USERSENDER")]
         public int UserSenderId { get; set; }
 

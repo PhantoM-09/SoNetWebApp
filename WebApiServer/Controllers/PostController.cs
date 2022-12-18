@@ -156,7 +156,7 @@ namespace WebApiServer.Controllers
 
                 if(like != null)
                 {
-                    _unitOfWork.LikeRepository.DeleteElement(like.PostId, like.UserId);
+                    _unitOfWork.LikeRepository.DeleteElement(like.PostId.Value, like.UserId.Value);
                     _unitOfWork.SaveChanges();
                 }
                 else

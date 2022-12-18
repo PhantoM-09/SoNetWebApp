@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FRIEND_ROUTE, PROFILE_ROUTE, CONTROL_ROUTE } from "../../../utils/consts";
+import { FRIEND_ROUTE, PROFILE_ROUTE, CONTROL_ROUTE, MESSAGE_ROUTE } from "../../../utils/consts";
 
 const MenuAdmin = () =>{
     const profileButton = useRef(null);
     const friendButton = useRef(null);
+    const messageButton = useRef(null);
     const controlButton = useRef(null);
 
     const navigate = useNavigate();
@@ -14,6 +15,10 @@ const MenuAdmin = () =>{
         if (location.pathname === '/friends') {
             profileButton.current.classList.remove("active");
             friendButton.current.classList.add("active");
+        }
+        if (location.pathname === '/message') {
+            profileButton.current.classList.remove("active");
+            messageButton.current.classList.add("active");
         }
         if (location.pathname === '/control') {
             profileButton.current.classList.remove("active");
@@ -39,8 +44,13 @@ const MenuAdmin = () =>{
                         Друзья
                     </div>
                 </button>
+                <button ref={messageButton} className="nav-link col-md-12" id="v-pills-message-tab" data-bs-toggle="pill" data-bs-target="#v-pills-message" type="button" role="tab" aria-controls="v-pills-message" aria-selected="false" onClick={() => navigate(MESSAGE_ROUTE)}>
+                                <div style={{ fontSize: '12pt', marginLeft: '-6.5em' }}>
+                                    Чат
+                                </div>
+                            </button>
                 <button ref={controlButton}  className="nav-link col-md-12" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false" onClick={() => navigate(CONTROL_ROUTE)}>
-                    <div  style={{fontSize:'12pt', marginLeft: '-3em'}}>
+                    <div  style={{fontSize:'12pt', marginLeft: '-2.5em'}}>
                         Управление
                     </div>
                 </button>

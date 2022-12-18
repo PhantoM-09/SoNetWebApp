@@ -1,6 +1,6 @@
 import MainFunctionality from "./component/functionality/MainFunctionality"
 import AuthForm from "./component/login/Auth"
-import { CONTROL_ROUTE, FRIEND_ROUTE, LOGIN_ROUTE, PROFILE_ROUTE, REGISTRATION_ROUTE, STRANGE_ROUTE } from "./utils/consts"
+import { CONTROL_ROUTE, FRIEND_ROUTE, LOGIN_ROUTE, MESSAGE_ROUTE, PROFILE_ROUTE, REGISTRATION_ROUTE, STRANGE_ROUTE } from "./utils/consts"
 
 export const authRoutes = [
     {
@@ -9,6 +9,10 @@ export const authRoutes = [
     },
     {
         path: FRIEND_ROUTE,
+        Component: <MainFunctionality/>
+    },
+    {
+        path: MESSAGE_ROUTE,
         Component: <MainFunctionality/>
     },
     {

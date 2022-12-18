@@ -11,11 +11,11 @@ const Friend = () => {
   
 
   return (
-    <div className="col-md-10">
-      <div className='col-md'>
+    <div className="col-md-10" >
+      <div className='col-md' >
       <Tab.Container id="left-tabs-example" defaultActiveKey="first">
             <Row>
-              <Col>
+              <Col style={{marginRight: '-1%'}}>
                 <Nav variant='pills' className='flex-column'>
                   <Nav.Item>
                     <Nav.Link eventKey="first" onClick={() => setCurrentTab(1)}>Мои друзья</Nav.Link>

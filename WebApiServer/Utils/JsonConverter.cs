@@ -9,6 +9,7 @@ namespace WebApiServer.Utils
         public static string ConvertUser(User user, UnitOfWork unitOfWork)
         {
             JsonObject jsonUser = new JsonObject();
+            jsonUser.Add("id", user.UserId);
             jsonUser.Add("lastName", user.UserLastName);
             jsonUser.Add("name", user.UserName);
             jsonUser.Add("sex", user.UserSex);

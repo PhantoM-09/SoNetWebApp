@@ -13,13 +13,14 @@ const Profile = observer(() => {
 
   const { user } = useContext(Context);
   const navigate = useNavigate();
-  const [profileUser, setProfileUser] = useState({ lastName: '', name: '', birthDate: null, sex: '', country: null, city: null, profileImage: '', profileBackground: '', friendCount: 0, subscriberCount: 0 })
+  const [profileUser, setProfileUser] = useState({ id: 0, lastName: '', name: '', birthDate: null, sex: '', country: null, city: null, profileImage: '', profileBackground: '', friendCount: 0, subscriberCount: 0 })
 
   useEffect(() => {
     axios.get('https://localhost:7132/api/user/get-user/', { withCredentials: true })
       .then(response => {
         var userInfo = response.data;
-
+        user.setUserId(response.data.id);
+        
         axios.get('https://localhost:7132/api/file/get-profile-image/', { withCredentials: true })
           .then(imageResponse => {
             setProfileUser({ ...profileUser, lastName: userInfo.lastName, name: userInfo.name, sex: userInfo.sex, birthDate: userInfo.birthDate, friendCount: userInfo.friendCount, subscriberCount: userInfo.subscriberCount, profileImage: 'https://localhost:7132/' + imageResponse.data.profileImage, profileBackground: 'https://localhost:7132/' + imageResponse.data.profileBackground });
@@ -41,7 +42,7 @@ const Profile = observer(() => {
   }, []);
 
   return (
-    <div className="col-md-10">
+    <div className="col-md-10" >
       {isStart
         ?
         (<div className="col-md-12" style={{ position: 'relative' }}>

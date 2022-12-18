@@ -8,7 +8,7 @@ const UnblockUser = (props) => {
     const unblockUser = (e) => {
         e.preventDefault();
 
-        axios.delete('https://localhost:7132/api/block/unblock-user/' + props.blockedUser.userId, { withCredentials: true })
+        axios.delete('http://localhost:5000/api/block/unblock-user/' + props.blockedUser.userId, { withCredentials: true })
             .then(response => {
                 props.setUsers(response.data);
                 props.onHide();

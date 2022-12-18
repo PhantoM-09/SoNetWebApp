@@ -15,6 +15,7 @@ const AppRouter = observer(() => {
     useEffect(() => {
         axios.get('https://localhost:7132/api/user/get-user/', { withCredentials: true })
             .then(response => {
+                user.setUserId(response.data.id);
                 user.setAuth(true);
                 if (response.data.type === "Admin") {
                     user.setAdmin(true);
