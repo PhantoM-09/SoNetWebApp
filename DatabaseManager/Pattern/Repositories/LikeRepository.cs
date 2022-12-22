@@ -25,7 +25,7 @@ namespace DatabaseManager.Pattern.Repositories
 
         public void DeleteElement(int id, int oprionalId = 0)
         {
-            Like likeToDelete = _context.Likes.Find(id, oprionalId);
+            Like likeToDelete = _context.Likes.Find(id);
             if (likeToDelete != null)
             {
                 _context.Likes.Remove(likeToDelete);
@@ -34,7 +34,7 @@ namespace DatabaseManager.Pattern.Repositories
 
         public Like GetItem(int id, int oprionalId = 0)
         {
-            return _context.Likes.Find(id, oprionalId);
+            return _context.Likes.Find(id);
         }
 
         public IEnumerable<Like> GetItems()

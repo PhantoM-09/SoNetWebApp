@@ -19,7 +19,7 @@ namespace Models
         public string UFileName { get; set; }
 
         [Column("FILETYPE")]
-        public string UFileType{ get; set; }
+        public string UFileType { get; set; }
 
         [Column("USERID")]
         public int UserId { get; set; }

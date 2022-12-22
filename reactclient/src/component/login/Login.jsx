@@ -77,12 +77,10 @@ const LoginForm = observer(() => {
         userData.append("email", email);
         userData.append("password", password);
 
-        axios.post('https://localhost:7132/api/auth/login', userData, {withCredentials: true})
+        axios.post('http://localhost:5000/api/auth/login', userData, {withCredentials: true})
             .then(response => {
                 user.setAuth(true);
-                if (response.data === "Admin") {
-                    user.setAdmin(true);
-                }
+                user.setUserType(response.data);
                 navigate(PROFILE_ROUTE);
             })
             .catch(error => {

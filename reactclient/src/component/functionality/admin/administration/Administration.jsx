@@ -7,15 +7,18 @@ import { Context } from '../../../..';
 import { STRANGE_ROUTE } from '../../../../utils/consts';
 import ModalForBlock from './ModalForBlock';
 import ModalForDelete from './ModalForDelete';
+import ModalForGrant from './ModalForGrant';
 
 const Administration = () => {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [searchString, setSearchString] = useState("");
     const { strangeUser } = useContext(Context);
+    const { user } = useContext(Context);
 
     const [blockUserVisible, setBlockUserVisible] = useState(false);
     const [deleteUserVisible, setDeleteUserVisible] = useState(false);
+    const [grantUserVisible, setGrantUserVisible] = useState(false);
     const [actionUser, setActionUser] = useState({});
 
     const searchingUsers = users.filter(searchingUser => {
@@ -28,6 +31,7 @@ const Administration = () => {
     }
 
     useEffect(() => {
+        console.log(user.userType);
         axios.get('http://localhost:5000/api/block/get-noblock-users/', { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
@@ -49,6 +53,14 @@ const Administration = () => {
             </div>
             <div className='col-md' style={{ marginTop: '1%' }}>
                 <div style={{ border: '1px solid black', borderRadius: 8, paddingBottom: '5%' }}>
+                    {<ModalForGrant
+                        show={grantUserVisible}
+                        onHide={() => setGrantUserVisible(false)}
+                        actionUser={actionUser}
+                        setUsers={setUsers}
+                    />
+                    }
+
                     {<ModalForDelete
                         show={deleteUserVisible}
                         onHide={() => setDeleteUserVisible(false)}
@@ -65,24 +77,33 @@ const Administration = () => {
                     />
                     }
                     {(searchingUsers.length === 0 && searchString != '') && <div style={{ textAlign: 'center', marginTop: '5%', fontSize: '16pt' }} >Пользователей нет</div>}
-                    {searchingUsers?.map((user) => (
-                        <div className="row-md" key={user.userId}>
+                    {searchingUsers?.map((searchUser) => (
+                        <div className="row-md" key={searchUser.userId}>
                             <div className="row">
                                 <div className="col-md-1">
-                                    <img src={'http://localhost:5000/' + user.userProfileImage
-                                    } style={{ cursor: 'pointer', borderRadius: 500, height: 80, width: 80, objectFit: 'cover', marginLeft: '35%', marginTop: '30%' }} onClick={() => goStrangeProfile(user.userId)} />
+                                    <img src={'http://localhost:5000/' + searchUser.userProfileImage
+                                    } style={{ cursor: 'pointer', borderRadius: 500, height: 80, width: 80, objectFit: 'cover', marginLeft: '35%', marginTop: '30%' }} onClick={() => goStrangeProfile(searchUser.userId)} />
                                 </div>
                                 <div className='col-md' style={{ fontSize: '14pt', marginLeft: '5%', marginTop: '1%' }}>
                                     <div className='row-md'>
-                                        {user.userLastName + ' ' + user.userName}
+                                        {searchUser.userLastName + ' ' + searchUser.userName}
                                     </div>
                                 </div>
                                 <div className='row-md offset-md-9' >
-                                    <div className='col-md' style={{ marginLeft: '6%' }}>
-                                        <button className='btn btn-primary' onClick={() => { setActionUser(user); setBlockUserVisible(true) }}>Блокировать</button>
+                                    {user.userType === 'MainAdmin'
+                                        ?
+                                        (<div className='col-md' style={{ marginLeft: '-9.1%' }}>
+                                            <button className='btn btn-primary' onClick={() => { setActionUser(searchUser); setGrantUserVisible(true) }}>Назначить администратором</button>
+                                        </div>)
+                                        :
+                                        (null)
+                                    }
+
+                                    <div className='col-md' style={{ marginLeft: '6%', marginTop: '1%' }}>
+                                        <button className='btn btn-primary' onClick={() => { setActionUser(searchUser); setBlockUserVisible(true) }}>Блокировать</button>
                                     </div>
                                     <div className='col-md' style={{ marginLeft: '10.5%', marginTop: '1%' }}>
-                                        <button className='btn btn-primary' onClick={() => { setActionUser(user); setDeleteUserVisible(true) }}>Удалить</button>
+                                        <button className='btn btn-primary' onClick={() => { setActionUser(searchUser); setDeleteUserVisible(true) }}>Удалить</button>
                                     </div>
                                 </div>
                                 <div className='row-md'>

@@ -91,6 +91,7 @@ namespace WebApiServer.Controllers
                 _unitOfWork.FriendRepository.AddElement(
                     new Friend
                     {
+                        RelationId = 0,
                         UserId = userId,
                         FriendId = int.Parse(friendId),
                         FriendRelation = 1
@@ -99,6 +100,7 @@ namespace WebApiServer.Controllers
                 _unitOfWork.FriendRepository.AddElement(
                    new Friend
                    {
+                       RelationId = 0,
                        UserId = int.Parse(friendId),
                        FriendId = userId,
                        FriendRelation = 0
@@ -129,18 +131,18 @@ namespace WebApiServer.Controllers
 
                 var friendId = Request.Form["friendId"];
 
-                var hisRelation = _unitOfWork.FriendRepository.GetItem(int.Parse(friendId), userId);
+                var hisRelation = _unitOfWork.FriendRepository.GetItems().FirstOrDefault(fr=> fr.UserId == int.Parse(friendId) && fr.FriendId == userId);
                 if(hisRelation.FriendRelation == 1)
                 {
-                    var myRelation = _unitOfWork.FriendRepository.GetItem(userId, int.Parse(friendId));
+                    var myRelation = _unitOfWork.FriendRepository.GetItems().FirstOrDefault(fr=>fr.UserId == userId && fr.FriendId == int.Parse(friendId));
                     myRelation.FriendRelation = 0;
                     _unitOfWork.FriendRepository.UpdateElement(myRelation);
                     flagWho = "subscriber";
                 }
                 else
                 {
-                    _unitOfWork.FriendRepository.DeleteElement(userId, int.Parse(friendId));
-                    _unitOfWork.FriendRepository.DeleteElement(int.Parse(friendId), userId);
+                    _unitOfWork.FriendRepository.DeleteElement(_unitOfWork.FriendRepository.GetItems().FirstOrDefault(fr=>fr.UserId == userId && fr.FriendId == int.Parse(friendId)).RelationId);
+                    _unitOfWork.FriendRepository.DeleteElement(_unitOfWork.FriendRepository.GetItems().FirstOrDefault(fr => fr.UserId == int.Parse(friendId) && fr.FriendId == userId).RelationId);
                     flagWho = "other";
                 }
 
@@ -167,7 +169,7 @@ namespace WebApiServer.Controllers
 
                 var friendId = Request.Form["friendId"];
 
-                var relation = _unitOfWork.FriendRepository.GetItem(userId, int.Parse(friendId));
+                var relation = _unitOfWork.FriendRepository.GetItems().FirstOrDefault(fr=> fr.UserId == userId && fr.FriendId == int.Parse(friendId));
                 relation.FriendRelation = 1;
                 _unitOfWork.SaveChanges();
 

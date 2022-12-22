@@ -14,6 +14,7 @@ namespace Models
     [Index(nameof(UserEmail), IsUnique = true)]
     public class User
     {
+
         [Column("USERID")]
         public int UserId { get; set; }
 

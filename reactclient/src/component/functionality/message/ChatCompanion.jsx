@@ -6,7 +6,7 @@ const ChatCompanion = ({chatCompanion}) => {
         <div className='row-md'>
             <div className="row">
                 <div className="col-md-1">
-                    <img src={'https://localhost:7132/' + chatCompanion.userProfileImage
+                    <img src={'http://localhost:5000/' + chatCompanion.userProfileImage
                     } style={{ cursor: 'pointer', borderRadius: 500, height: 70, width: 70, objectFit: 'cover', marginLeft: '35%', marginTop: '30%' }}  />
                 </div>
                 <div className='col-md' style={{ fontSize: '14pt', marginLeft: '3%', marginTop: '1%' }}>

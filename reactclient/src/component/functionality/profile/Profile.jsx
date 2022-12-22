@@ -16,14 +16,14 @@ const Profile = observer(() => {
   const [profileUser, setProfileUser] = useState({ id: 0, lastName: '', name: '', birthDate: null, sex: '', country: null, city: null, profileImage: '', profileBackground: '', friendCount: 0, subscriberCount: 0 })
 
   useEffect(() => {
-    axios.get('https://localhost:7132/api/user/get-user/', { withCredentials: true })
+    axios.get('http://localhost:5000/api/user/get-user/', { withCredentials: true })
       .then(response => {
         var userInfo = response.data;
         user.setUserId(response.data.id);
         
-        axios.get('https://localhost:7132/api/file/get-profile-image/', { withCredentials: true })
+        axios.get('http://localhost:5000/api/file/get-profile-image/', { withCredentials: true })
           .then(imageResponse => {
-            setProfileUser({ ...profileUser, lastName: userInfo.lastName, name: userInfo.name, sex: userInfo.sex, birthDate: userInfo.birthDate, friendCount: userInfo.friendCount, subscriberCount: userInfo.subscriberCount, profileImage: 'https://localhost:7132/' + imageResponse.data.profileImage, profileBackground: 'https://localhost:7132/' + imageResponse.data.profileBackground });
+            setProfileUser({ ...profileUser, lastName: userInfo.lastName, name: userInfo.name, sex: userInfo.sex, birthDate: userInfo.birthDate, friendCount: userInfo.friendCount, subscriberCount: userInfo.subscriberCount, profileImage: 'http://localhost:5000/' + imageResponse.data.profileImage, profileBackground: 'http://localhost:5000/' + imageResponse.data.profileBackground });
             setIsStart(true);
           })
       })
@@ -80,7 +80,7 @@ const Profile = observer(() => {
                       <div className="row-md">
                         <div className="col-md">
                           <div style={{ padding: '5%' }}>
-                            <button type="button" className="btn btn-primary col-md-12" style={{ fontSize: '12pt' }}>Редактировать</button>
+                            <button type="button" className="btn btn-primary col-md-12" style={{ fontSize: '12pt', visibility: 'hidden'}} >Редактировать</button>
                           </div>
                         </div>
                       </div>

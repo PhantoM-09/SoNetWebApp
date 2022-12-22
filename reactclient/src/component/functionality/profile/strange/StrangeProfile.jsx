@@ -36,7 +36,7 @@ const StrangeProfile = () => {
         var formData = new FormData();
         formData.append("friendId", userId);
 
-        axios.post('https://localhost:7132/api/friend/delete-friend/', formData, { withCredentials: true })
+        axios.post('http://localhost:5000/api/friend/delete-friend/', formData, { withCredentials: true })
             .then(response => {
                 if (response.data === 'subscriber') {
                     setRelationMode("Принять заявку")
@@ -46,7 +46,7 @@ const StrangeProfile = () => {
                 }
 
                 var strangeUserId = strangeUser.UserId;
-                axios.get('https://localhost:7132/api/user/get-strange-user/' + strangeUserId, { withCredentials: true })
+                axios.get('http://localhost:5000/api/user/get-strange-user/' + strangeUserId, { withCredentials: true })
                     .then(response => {
                         var userInfo = response.data;
 
@@ -70,11 +70,11 @@ const StrangeProfile = () => {
         var formData = new FormData();
         formData.append("friendId", userId);
 
-        axios.post('https://localhost:7132/api/friend/apply-friend/', formData, { withCredentials: true })
+        axios.post('http://localhost:5000/api/friend/apply-friend/', formData, { withCredentials: true })
             .then(() => {
                 setRelationMode("Удалить из друзей")
                 var strangeUserId = strangeUser.UserId;
-                axios.get('https://localhost:7132/api/user/get-strange-user/' + strangeUserId, { withCredentials: true })
+                axios.get('http://localhost:5000/api/user/get-strange-user/' + strangeUserId, { withCredentials: true })
                     .then(response => {
                         var userInfo = response.data;
                         setProfileUser({ ...profileUser, friendCount: userInfo.friendCount, subscriberCount: userInfo.subscriberCount });
@@ -97,11 +97,11 @@ const StrangeProfile = () => {
         var formData = new FormData();
         formData.append("friendId", userId);
 
-        axios.post('https://localhost:7132/api/friend/add-friend/', formData, { withCredentials: true })
+        axios.post('http://localhost:5000/api/friend/add-friend/', formData, { withCredentials: true })
             .then(() => {
                 setRelationMode("Удалить из друзей")
                 var strangeUserId = strangeUser.UserId;
-                axios.get('https://localhost:7132/api/user/get-strange-user/' + strangeUserId, { withCredentials: true })
+                axios.get('http://localhost:5000/api/user/get-strange-user/' + strangeUserId, { withCredentials: true })
                     .then(response => {
                         var userInfo = response.data;
                         setProfileUser({ ...profileUser, friendCount: userInfo.friendCount, subscriberCount: userInfo.subscriberCount });
@@ -124,13 +124,13 @@ const StrangeProfile = () => {
     useEffect(() => {
         var strangeUserId = strangeUser.UserId;
 
-        axios.get('https://localhost:7132/api/user/get-strange-user/' + strangeUserId, { withCredentials: true })
+        axios.get('http://localhost:5000/api/user/get-strange-user/' + strangeUserId, { withCredentials: true })
             .then(response => {
                 var userInfo = response.data;
                 console.log(userInfo);
-                axios.get('https://localhost:7132/api/file/get-strange-profile-image/' + strangeUserId, { withCredentials: true })
+                axios.get('http://localhost:5000/api/file/get-strange-profile-image/' + strangeUserId, { withCredentials: true })
                     .then(imageResponse => {
-                        setProfileUser({ ...profileUser, lastName: userInfo.lastName, name: userInfo.name, sex: userInfo.sex, birthDate: userInfo.birthDate, friendCount: userInfo.friendCount, subscriberCount: userInfo.subscriberCount, profileImage: 'https://localhost:7132/' + imageResponse.data.profileImage, profileBackground: 'https://localhost:7132/' + imageResponse.data.profileBackground });
+                        setProfileUser({ ...profileUser, lastName: userInfo.lastName, name: userInfo.name, sex: userInfo.sex, birthDate: userInfo.birthDate, friendCount: userInfo.friendCount, subscriberCount: userInfo.subscriberCount, profileImage: 'http://localhost:5000/' + imageResponse.data.profileImage, profileBackground: 'http://localhost:5000/' + imageResponse.data.profileBackground });
 
                         setRelationMode("Добавить в друзья")
 

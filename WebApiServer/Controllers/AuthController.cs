@@ -43,7 +43,7 @@ namespace WebApiServer.Controllers
                                         md5.ComputeHash(
                                             Encoding.UTF8.GetBytes(simpleUser.UserPassword))),
                 UserSex = simpleUser.UserSex,
-                UserBirthDay = simpleUser.UserBirthDay,
+                UserBirthDay = simpleUser.UserBirthDay.Value,
                 UserType = "User",
 
             };
@@ -86,10 +86,7 @@ namespace WebApiServer.Controllers
                 Secure = true
             });
 
-            if (string.Equals(foundUser.UserType, "User"))
-                return Ok("User");
-            else
-                return Ok("Admin");
+            return Ok(foundUser.UserType);
         }
 
         [Route("logout")]

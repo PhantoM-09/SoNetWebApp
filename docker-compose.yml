@@ -1,8 +1,14 @@
 version: '3.4'
 
 services:
-  webapiserver:
+  backend:
     image: ${DOCKER_REGISTRY-}webapiserver
     build:
       context: .
       dockerfile: WebApiServer/Dockerfile
+
+  client:
+    image: client
+    build: 
+        context: ./reactclient
+        dockerfile: Dockerfile

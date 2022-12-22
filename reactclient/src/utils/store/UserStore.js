@@ -5,7 +5,7 @@ class UserStore {
     constructor() {
         this._userId = 0
         this._isAuth = false
-        this._isAdmin = false
+        this._userType = 'User'
         this._start = false
         makeAutoObservable(this);
     }
@@ -18,8 +18,8 @@ class UserStore {
         this._isAuth = bool;
     }
 
-    setAdmin(isAdmin) {
-        this._isAdmin = isAdmin;
+    setUserType(userType) {
+        this._userType = userType;
     }
 
     setStart(start) {
@@ -34,8 +34,8 @@ class UserStore {
         return this._isAuth;
     }
 
-    get isAdmin() {
-        return this._isAdmin;
+    get userType() {
+        return this._userType;
     }
 
     get isStart() {

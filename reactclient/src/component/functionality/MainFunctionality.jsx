@@ -17,7 +17,7 @@ const MainFunctionality = () => {
     return (
         <div className="container">
             <div className="row" style={{ marginTop: 20 }}>
-                {user.isAdmin ?
+                {user.userType === 'AccessAdmin' ||  user.userType === 'MainAdmin' ?
                     (<MenuAdmin />)
                     :
                     (<MenuUser />)
@@ -46,7 +46,7 @@ const MainFunctionality = () => {
                     :
                     (null)
                 }
-                {user.isAdmin && location.pathname === "/control"
+                {(user.userType === 'AccessAdmin' ||  user.userType === 'MainAdmin') && location.pathname === "/control"
                     ?
                     (<Control />)
                     :

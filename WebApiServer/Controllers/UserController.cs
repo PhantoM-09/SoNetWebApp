@@ -30,7 +30,9 @@ namespace WebApiServer.Controllers
                 var jwtToken = Request.Cookies["jwt"];
                 var validatedToken = _jwtService.Verify(jwtToken);
 
-                return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u=> !string.Equals(u.UserType, "Admin")), _unitOfWork));
+                return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u=> !string.Equals(u.UserType, "MainAdmin")
+                                                                                                                             && !string.Equals(u.UserType, "ContentAdmin")
+                                                                                                                              && !string.Equals(u.UserType, "AccessAdmin")), _unitOfWork));
             }
             catch (Exception ex)
             {
@@ -66,12 +68,72 @@ namespace WebApiServer.Controllers
                 var jwtToken = Request.Cookies["jwt"];
                 var validatedToken = _jwtService.Verify(jwtToken);
 
-                var userId = Request.Form["userId"];
+                var userIdForm = Request.Form["userId"];
 
-                _unitOfWork.UserRepository.DeleteElement(int.Parse(userId));
+                int userId = int.Parse(userIdForm);
+
+                var posts = _unitOfWork.PostRepository.GetItems().Where(p => p.UserId == userId);
+                foreach(var item in posts)
+                {
+                    item.UserId = null;
+                    _unitOfWork.PostRepository.UpdateElement(item);
+                    _unitOfWork.SaveChanges();
+                }
+
+                var comments = _unitOfWork.CommentRepository.GetItems().Where(c => c.UserId == userId);
+                foreach (var item in comments)
+                {
+                    item.UserId = null;
+                    _unitOfWork.CommentRepository.UpdateElement(item);
+                    _unitOfWork.SaveChanges();
+                }
+
+                var messageSended = _unitOfWork.MessageRepository.GetItems().Where(m => m.UserSenderId == userId);
+                foreach (var item in messageSended)
+                {
+                    item.UserSenderId = null;
+                    _unitOfWork.MessageRepository.UpdateElement(item);
+                    _unitOfWork.SaveChanges();
+                }
+
+                var messageRecieved = _unitOfWork.MessageRepository.GetItems().Where(m => m.UserReceiverId == userId);
+                foreach (var item in messageRecieved)
+                {
+                    item.UserReceiverId = null;
+                    _unitOfWork.MessageRepository.UpdateElement(item);
+                    _unitOfWork.SaveChanges();
+                }
+
+                var relationSended = _unitOfWork.FriendRepository.GetItems().Where(fr=>fr.UserId == userId);
+                foreach (var item in relationSended)
+                {
+                    item.UserId = null;
+                    _unitOfWork.FriendRepository.UpdateElement(item);
+                    _unitOfWork.SaveChanges();
+                }
+
+                var relationRecieved = _unitOfWork.FriendRepository.GetItems().Where(fr=>fr.FriendId == userId);
+                foreach (var item in relationRecieved)
+                {
+                    item.FriendId = null;
+                    _unitOfWork.FriendRepository.UpdateElement(item);
+                    _unitOfWork.SaveChanges();
+                }
+
+                var likes = _unitOfWork.LikeRepository.GetItems().Where(l=> l.UserId == userId);
+                foreach (var item in likes)
+                {
+                    item.UserId = null;
+                    _unitOfWork.LikeRepository.UpdateElement(item);
+                    _unitOfWork.SaveChanges();
+                }
+
+                _unitOfWork.UserRepository.DeleteElement(userId);
                 _unitOfWork.SaveChanges();
 
-                return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u => !string.Equals(u.UserType, "Admin")), _unitOfWork));
+                return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u => !string.Equals(u.UserType, "MainAdmin")
+                                                                                                                             && !string.Equals(u.UserType, "ContentAdmin")
+                                                                                                                              && !string.Equals(u.UserType, "AccessAdmin")), _unitOfWork));
             }
             catch (Exception ex)
             {

@@ -24,12 +24,12 @@ namespace Models
         public string MessageGroupName { get; set; }
 
         [Column("USERSENDER")]
-        public int UserSenderId { get; set; }
+        public int? UserSenderId { get; set; }
 
         [Column("USERRECEIVER")]
-        public int UserReceiverId { get; set; }
+        public int? UserReceiverId { get; set; }
 
-        public virtual User UserSend { get; set; }
-        public virtual User UserReceive { get; set; }
+        public virtual User? UserSend { get; set; }
+        public virtual User? UserReceive { get; set; }
     }
 }

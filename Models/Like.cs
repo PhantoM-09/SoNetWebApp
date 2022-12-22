@@ -5,6 +5,9 @@ namespace Models
     [Table("JLIKE")]
     public class Like
     {
+        [Column("LIKEID")]
+        public int LikeId { get; set; }
+
         [Column("POSTID")]
         public int? PostId { get; set; }
 

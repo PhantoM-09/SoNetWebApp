@@ -94,7 +94,9 @@ namespace WebApiServer.Controllers
                 var jwtToken = Request.Cookies["jwt"];
                 var validatedToken = _jwtService.Verify(jwtToken);
 
-                return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u => u.BlockId == null && !string.Equals(u.UserType, "Admin")), _unitOfWork));
+                return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u => u.BlockId == null && !string.Equals(u.UserType, "MainAdmin")
+                                                                                                                             && !string.Equals(u.UserType, "ContentAdmin")
+                                                                                                                              && !string.Equals(u.UserType, "AccessAdmin")), _unitOfWork));
             }
             catch (Exception ex)
             {
@@ -126,7 +128,9 @@ namespace WebApiServer.Controllers
                 _unitOfWork.UserRepository.UpdateElement(blockedUser);
                 _unitOfWork.SaveChanges();
 
-                return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u => u.BlockId == null && !string.Equals(u.UserType, "Admin")), _unitOfWork));
+                return Ok(JsonConverter.ConvertOtherUser(_unitOfWork.UserRepository.GetItems().Where(u => u.BlockId == null && !string.Equals(u.UserType, "MainAdmin")
+                                                                                                                             && !string.Equals(u.UserType, "ContentAdmin")
+                                                                                                                              && !string.Equals(u.UserType, "AccessAdmin")), _unitOfWork));
             }
             catch (Exception ex)
             {

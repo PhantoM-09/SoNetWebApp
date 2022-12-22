@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
+import ModalComment from "./comment/ModalComment";
 import DeletePost from "./DeletePost";
 import LikeCounter from "./LikeCounter";
 import UpdatePost from "./UpdatePost";
@@ -9,14 +10,30 @@ const Post = (props) => {
     const [posts, setPosts] = useState([]);
     const [postText, setPostText] = useState("");
 
+    const [commentPostVisible, setCommentPostVisible] = useState(false);
+    const [commentedPost, setCommentedPost] = useState({});
+
     const [deletePostVisible, setDeletePostVisible] = useState(false);
     const [deletedPost, setDeletedPost] = useState({});
 
     const [updatePostVisible, setUpdatePostVisible] = useState(false);
     const [updatedPost, setUpdatedPost] = useState({});
 
+    const [comments, setComments] = useState([]);
+
+    const loadComments = (post) =>{
+
+        axios.get('http://localhost:5000/api/comment/get-comments/' + post.postId, { withCredentials: true })
+            .then(response => {
+                setComments(response.data);
+            })
+
+        setCommentedPost(post);
+        setCommentPostVisible(true);
+    }
+
     useEffect(() => {
-        axios.get('https://localhost:7132/api/post/get-posts/', { withCredentials: true })
+        axios.get('http://localhost:5000/api/post/get-posts/', { withCredentials: true })
             .then(postResponse => {
                 setPosts(postResponse.data);
             })
@@ -36,7 +53,7 @@ const Post = (props) => {
                 PostPublication: new Date()
             }
 
-            axios.post('https://localhost:7132/api/post/add-post/', post, { withCredentials: true })
+            axios.post('http://localhost:5000/api/post/add-post/', post, { withCredentials: true })
                 .then(response => {
                     setPosts(prevState => [response.data, ...prevState]);
                     setPostText("");
@@ -59,6 +76,15 @@ const Post = (props) => {
                     </div>
                 </div>
             </div>
+            {<ModalComment
+                show={commentPostVisible}
+                onHide={() => setCommentPostVisible(false)}
+                commentedPost={commentedPost}
+                user={props.user}
+                comments = {comments}
+                setComments = {setComments}
+            />
+            }
             {<DeletePost
                 show={deletePostVisible}
                 onHide={() => setDeletePostVisible(false)}
@@ -85,7 +111,7 @@ const Post = (props) => {
                                 <img style={{ borderRadius: 500, height: 50, width: 50, objectFit: 'cover', marginTop: '-5%', marginLeft: '20%' }} src={props.user.profileImage} />
                             </div>
                             <div className="col-md-6 d-inline-block">
-                                <div className="col-md-8" style={{ fontSize: '12pt', marginLeft: '7.5%' }}>
+                                <div className="col-md-12" style={{ fontSize: '12pt', marginLeft: '7.5%' }}>
                                     {props.user.lastName + ' ' + props.user.name}
                                 </div>
                                 <div className="col-md-6" style={{ fontSize: '10pt', marginLeft: '7.5%' }}>
@@ -112,7 +138,7 @@ const Post = (props) => {
                                 setPosts={setPosts}
                             />
                             <div className="col-md">
-                                <img src="free-icon-comment-4991361.png" style={{ width: 20, height: 20, cursor: 'pointer', marginLeft: '13%' }} />
+                                <img src="free-icon-comment-4991361.png" style={{ width: 20, height: 20, cursor: 'pointer', marginLeft: '13%' }} onClick={() =>  loadComments(post)}/>
                             </div>
                         </div>
                     </div>

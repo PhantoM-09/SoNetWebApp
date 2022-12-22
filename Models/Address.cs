@@ -22,6 +22,6 @@ namespace Models
         [Column("ADDRESSCITY")]
         public string AddressCity { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
+        public List<User> Users { get; set; }
     }
 }

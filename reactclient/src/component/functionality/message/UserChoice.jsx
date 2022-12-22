@@ -6,6 +6,8 @@ import { useState } from 'react';
 const UserChoice = (props) => {
     const [users, setUsers] = useState([]);
     const [searchString, setSearchString] = useState('');
+    const [lastCompanion, setLastCompanion] = useState({});
+    const [start, setStart] = useState(false);
 
     const searchingUsers = users.filter(searchingUser => {
         return String(searchingUser.userLastName).toLowerCase().includes(searchString.toLowerCase().trim())
@@ -15,14 +17,14 @@ const UserChoice = (props) => {
 
         if(e.target.value.length === 0)
         {
-            axios.get('https://localhost:7132/api/friend/get-friends/', { withCredentials: true })
+            axios.get('http://localhost:5000/api/friend/get-friends/', { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
             })
         }
         else
         {
-            axios.get('https://localhost:7132/api/user/get-all-users/', { withCredentials: true })
+            axios.get('http://localhost:5000/api/user/get-all-users/', { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
             })
@@ -32,13 +34,28 @@ const UserChoice = (props) => {
     }
 
     useEffect(() => {
-        axios.get('https://localhost:7132/api/friend/get-friends/', { withCredentials: true })
+        axios.get('http://localhost:5000/api/friend/get-friends/', { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
             })
 
     }, [])
 
+    const joinChat = (companion) =>{
+        if(companion !== lastCompanion && !start)
+        {
+            setLastCompanion(companion);
+            props.joinChat(companion);
+            setStart(true);
+        }
+        else
+        {
+            props.closeConnection();
+            setLastCompanion(companion);
+            props.setChatCompanion(companion);
+             
+        }
+    }
     return (
         <div>
             <div className='col-md'>
@@ -50,7 +67,7 @@ const UserChoice = (props) => {
                     <div className="row-md" key={user.userId}>
                         <div className="row">
                             <div className="col-md-2">
-                                <img src={'https://localhost:7132/' + user.userProfileImage} style={{ cursor: 'pointer', borderRadius: 500, height: 60, width: 60, objectFit: 'cover', marginLeft: '40%', marginTop: '30%' }} onClick={e=> props.joinChat(user)}/>
+                                <img src={'http://localhost:5000/' + user.userProfileImage} style={{ cursor: 'pointer', borderRadius: 500, height: 60, width: 60, objectFit: 'cover', marginLeft: '40%', marginTop: '30%' }} onClick={e => joinChat(user)}/>
                             </div>
                             <div className='col-md-8' style={{ fontSize: '12pt', marginLeft: '12%', marginTop: '1%' }}>
                                 <div className='row-md text-break'>

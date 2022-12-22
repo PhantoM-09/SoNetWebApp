@@ -20,14 +20,14 @@ namespace DatabaseManager.Pattern.Repositories
 
         public void DeleteElement(int id, int oprionalId = 0)
         {
-            Friend friendToDelete = _context.Friends.Find(id, oprionalId);
+            Friend friendToDelete = _context.Friends.Find(id);
             if(friendToDelete != null)
                 _context.Friends.Remove(friendToDelete);
         }
 
         public Friend GetItem(int id, int oprionalId = 0)
         {
-            return _context.Friends.Find(id, oprionalId);
+            return _context.Friends.Find(id);
         }
 
         public IEnumerable<Friend> GetItems()

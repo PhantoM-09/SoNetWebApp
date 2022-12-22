@@ -12,10 +12,10 @@ const LikeCounter = (props) => {
     const press = "red-heart.png";
 
     useEffect(() => {
-        axios.get('https://localhost:7132/api/post/get-like-count/' + props.post.postId, { withCredentials: true })
+        axios.get('http://localhost:5000/api/post/get-like-count/' + props.post.postId, { withCredentials: true })
             .then(response => {
                 setLikeCount(response.data)
-                axios.get('https://localhost:7132/api/post/get-liked/' + props.post.postId, { withCredentials: true })
+                axios.get('http://localhost:5000/api/post/get-liked/' + props.post.postId, { withCredentials: true })
                     .then(response => {
                         switch (response.data) {
                             case 'liked':
@@ -46,7 +46,7 @@ const LikeCounter = (props) => {
     }
 
     const changeLikeAmount = () => {
-        axios.put('https://localhost:7132/api/post/change-like/' + props.post.postId, null, { withCredentials: true })
+        axios.put('http://localhost:5000/api/post/change-like/' + props.post.postId, null, { withCredentials: true })
             .then(response => {
                 setLikeCount(response.data);
             })

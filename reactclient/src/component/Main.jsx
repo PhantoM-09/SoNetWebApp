@@ -26,10 +26,10 @@ const Main = observer(() => {
   }, [user.isAuth]);
 
   const logout = () => {
-    axios.get('https://localhost:7132/api/auth/logout', { withCredentials: true })
+    axios.get('http://localhost:5000/api/auth/logout', { withCredentials: true })
       .then(response => {
         user.setAuth(false);
-        user.setAdmin(false);
+        user.setUserType('user');
         navigate(LOGIN_ROUTE);
       })
   }

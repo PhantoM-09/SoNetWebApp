@@ -13,13 +13,11 @@ const AppRouter = observer(() => {
     const { user } = useContext(Context);
 
     useEffect(() => {
-        axios.get('https://localhost:7132/api/user/get-user/', { withCredentials: true })
+        axios.get('http://localhost:5000/api/user/get-user/', { withCredentials: true })
             .then(response => {
                 user.setUserId(response.data.id);
                 user.setAuth(true);
-                if (response.data.type === "Admin") {
-                    user.setAdmin(true);
-                }
+                user.setUserType(response.data.type);
                 user.setStart(true);
             })
             .catch(() => {

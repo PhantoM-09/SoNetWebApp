@@ -119,5 +119,55 @@ namespace WebApiServer.Utils
             string json = jsonUsers.ToJsonString();
             return json;
         }
+
+        public static string ConvertMessages(IEnumerable<Message> messages, UnitOfWork unitOfWork)
+        {
+            JsonArray jsonMessages = new JsonArray();
+            foreach (var item in messages)
+            {
+                JsonObject jsonMessage = new JsonObject();
+                jsonMessage.Add("messageText", item.MessageText);
+                jsonMessage.Add("messageSend", item.MessageCreate);
+
+                var user = unitOfWork.UserRepository.GetItem(item.UserSenderId.Value);
+                jsonMessage.Add("messageSender", user.UserLastName + " " + user.UserName);
+
+                jsonMessages.Add(jsonMessage);
+            }
+
+            string json = jsonMessages.ToJsonString();
+            return json;
+        }
+
+        public static string ConvertComments(IEnumerable<Comment> commnets, UnitOfWork unitOfWork)
+        {
+            JsonArray jsonComments = new JsonArray();
+            foreach (var item in commnets)
+            {
+                JsonObject jsonComment = new JsonObject();
+                jsonComment.Add("commentId", item.CommentId);
+                jsonComment.Add("commentSend", item.CommentSend);
+                jsonComment.Add("commentText", item.CommentText);
+
+                var user = unitOfWork.UserRepository.GetItem(item.UserId.Value);
+                jsonComment.Add("userLastName", user.UserLastName);
+                jsonComment.Add("userName", user.UserName);
+                jsonComment.Add("userId", user.UserId);
+
+                var profileImage = unitOfWork.UFileRepository.GetItems().FirstOrDefault(uf => uf.UserId == user.UserId && string.Equals(uf.UFileType, "Profile image"));
+                var profileImagePath = "standard_files/standard_profile_image.png";
+                if (profileImage != null)
+                {
+                    profileImagePath = FileManager.GetImagePath(user.UserEmail, profileImage.UFileName);
+                }
+
+                jsonComment.Add("userProfileImage", profileImagePath);
+
+                jsonComments.Add(jsonComment);
+            }
+
+            string json = jsonComments.ToJsonString();
+            return json;
+        }
     }
 }

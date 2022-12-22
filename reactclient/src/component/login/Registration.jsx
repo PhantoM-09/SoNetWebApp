@@ -34,13 +34,13 @@ const RegistrationForm = (props) => {
       UserSex: registrationUser.sex,
       UserBirthDay: registrationUser.birthDate,
     };
-    axios.post('https://localhost:7132/api/auth/register', user, {withCredentials: true})
+    axios.post('http://localhost:5000/api/auth/register', user, {withCredentials: true})
       .then(userResponse => {
         var userFile = new FormData();
         userFile.append("image", registrationUser.image);
         userFile.append("email", registrationUser.email);
 
-        axios.post('https://localhost:7132/api/file/add-profile-image', userFile, {withCredentials: true})
+        axios.post('http://localhost:5000/api/file/add-profile-image', userFile, {withCredentials: true})
           .then(imageResponse => {
             toast.success(imageResponse.data, {
               position: toast.POSITION.BOTTOM_RIGHT,
@@ -336,7 +336,7 @@ const SecondStep = (props) => {
 }
 
 const ThirdStep = (props) => {
-  const [image, setImage] = useState("https://localhost:7132/standard_files/standard_profile_image.png");
+  const [image, setImage] = useState("http://localhost:5000/standard_files/standard_profile_image.png");
 
   const handleChangeFile = (event) => {
     var file = event.target.files[0];

@@ -25,7 +25,7 @@ const UpdatePost = (props) => {
                 PostPublication: new Date()
             };
     
-            axios.put('https://localhost:7132/api/post/update-post/' + props.updatedPost.postId, newPost, { withCredentials: true })
+            axios.put('http://localhost:5000/api/post/update-post/' + props.updatedPost.postId, newPost, { withCredentials: true })
                 .then(response => {
                     props.setPosts(response.data);
                     props.onHide();

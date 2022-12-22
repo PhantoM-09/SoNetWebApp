@@ -3,6 +3,7 @@ using DatabaseManager.Pattern;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using WebApiServer.Utils;
+using WebApiServer.Utils.Chat;
 using WebApiServer.Utils.Chat.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,7 +38,7 @@ builder.Services.AddCors(options =>
 });
 // Add services to the container.
 
-
+builder.Services.AddSingleton<IDictionary<string, UserConnection>>(options => new Dictionary<string, UserConnection>());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
