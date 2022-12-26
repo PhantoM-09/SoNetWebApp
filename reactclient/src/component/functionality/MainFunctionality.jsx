@@ -8,6 +8,7 @@ import MenuAdmin from './admin/MenuAdmin';
 import Friend from './friend/Friend';
 import MenuUser from './MenuUser'
 import Message from './message/Message';
+import EditProfile from './profile/edit/EditProfile';
 import Profile from './profile/Profile';
 import StrangeProfile from './profile/strange/StrangeProfile';
 
@@ -25,6 +26,12 @@ const MainFunctionality = () => {
                 {location.pathname === "/profile"
                     ?
                     (<Profile />)
+                    :
+                    (null)
+                }
+                {location.pathname === "/edit-profile"
+                    ?
+                    (<EditProfile/>)
                     :
                     (null)
                 }

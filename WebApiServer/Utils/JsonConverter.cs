@@ -23,12 +23,21 @@ namespace WebApiServer.Utils
                                                     .Where(f => f.UserId == user.UserId && f.FriendRelation == 0)
                                                             .Count());
 
-            var userAddress = unitOfWork.AddressRepository.GetItem(user.UserId);
-            if(userAddress != null)
+            if(user.AddressId.HasValue)
             {
-                jsonUser.Add("country", userAddress.AddressCountry);
-                jsonUser.Add("city", userAddress.AddressCity);
+                var userAddress = unitOfWork.AddressRepository.GetItem(user.AddressId.Value);
+                if (userAddress != null)
+                {
+                    jsonUser.Add("country", userAddress.AddressCountry);
+                    jsonUser.Add("city", userAddress.AddressCity);
+                }
             }
+            else
+            {
+                jsonUser.Add("country", null);
+                jsonUser.Add("city", null);
+            }
+            
 
             string json = jsonUser.ToJsonString();
             return json;
@@ -49,12 +58,21 @@ namespace WebApiServer.Utils
                                                     .Where(f => f.UserId == strangeUser.UserId && f.FriendRelation == 0)
                                                             .Count());
 
-            var userAddress = unitOfWork.AddressRepository.GetItem(strangeUser.UserId);
-            if (userAddress != null)
+            if (strangeUser.AddressId.HasValue)
             {
-                jsonUser.Add("country", userAddress.AddressCountry);
-                jsonUser.Add("city", userAddress.AddressCity);
+                var userAddress = unitOfWork.AddressRepository.GetItem(strangeUser.AddressId.Value);
+                if (userAddress != null)
+                {
+                    jsonUser.Add("country", userAddress.AddressCountry);
+                    jsonUser.Add("city", userAddress.AddressCity);
+                }
             }
+            else
+            {
+                jsonUser.Add("country", null);
+                jsonUser.Add("city", null);
+            }
+
 
             var relation = unitOfWork.FriendRepository.GetItem(userId, strangeUser.UserId);
             if (relation == null)

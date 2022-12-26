@@ -32,7 +32,7 @@ const Administration = () => {
 
     useEffect(() => {
         console.log(user.userType);
-        axios.get('http://localhost:5000/api/block/get-noblock-users/', { withCredentials: true })
+        axios.get('https://localhost:7132/api/block/get-noblock-users/', { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
                 console.log(response.data);
@@ -81,7 +81,7 @@ const Administration = () => {
                         <div className="row-md" key={searchUser.userId}>
                             <div className="row">
                                 <div className="col-md-1">
-                                    <img src={'http://localhost:5000/' + searchUser.userProfileImage
+                                    <img src={'https://localhost:7132/' + searchUser.userProfileImage
                                     } style={{ cursor: 'pointer', borderRadius: 500, height: 80, width: 80, objectFit: 'cover', marginLeft: '35%', marginTop: '30%' }} onClick={() => goStrangeProfile(searchUser.userId)} />
                                 </div>
                                 <div className='col-md' style={{ fontSize: '14pt', marginLeft: '5%', marginTop: '1%' }}>

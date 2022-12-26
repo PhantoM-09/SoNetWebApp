@@ -28,7 +28,7 @@ const BlockedUsers = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/block/get-users/', { withCredentials: true })
+        axios.get('https://localhost:7132/api/block/get-users/', { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
             })
@@ -67,7 +67,7 @@ const BlockedUsers = () => {
                         <div className="row-md" key={user.userId}>
                             <div className="row">
                                 <div className="col-md-1">
-                                    <img src={'http://localhost:5000/' + user.userProfileImage
+                                    <img src={'https://localhost:7132/' + user.userProfileImage
                                     } style={{ cursor: 'pointer', borderRadius: 500, height: 80, width: 80, objectFit: 'cover', marginLeft: '35%', marginTop: '30%' }} onClick={() => goStrangeProfile(user.userId)} />
                                 </div>
                                 <div className='col-md' style={{ fontSize: '14pt', marginLeft: '5%', marginTop: '1%' }}>

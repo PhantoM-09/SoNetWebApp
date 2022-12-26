@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 namespace Models
 {
     [Table("SADDRESS")]
-    [Index(nameof(AddressCountry), IsUnique =true)]
     public class Address
     {
         [Column("ADDRESSID")]
@@ -23,5 +22,16 @@ namespace Models
         public string AddressCity { get; set; }
 
         public List<User> Users { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Address address &&
+                   AddressCountry == address.AddressCountry;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(AddressCountry);
+        }
     }
 }

@@ -9,7 +9,7 @@ const ViewBlockUser = (props) => {
     const [block, setBlock] = useState({})
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/block/get-block/' + props.blockedUser.userId, {withCredentials: true})
+        axios.get('https://localhost:7132/api/block/get-block/' + props.blockedUser.userId, {withCredentials: true})
         .then(response => {
             setBlock(response.data);
         })
@@ -29,7 +29,7 @@ const ViewBlockUser = (props) => {
                     </div>
                     <div className="row-md">
                         <div className="col-md-1 d-inline-block">
-                            <img src={'http://localhost:5000/' + props.blockedUser.userProfileImage} style={{ borderRadius: 500, height: 80, width: 80, objectFit: 'cover', marginLeft: '0%', marginTop: '30%' }} />
+                            <img src={'https://localhost:7132/' + props.blockedUser.userProfileImage} style={{ borderRadius: 500, height: 80, width: 80, objectFit: 'cover', marginLeft: '0%', marginTop: '30%' }} />
                         </div>
                         <div className='col-md d-inline-block' style={{ fontSize: '16pt', marginLeft: '4%' }}>
                             <div className='col-md'>

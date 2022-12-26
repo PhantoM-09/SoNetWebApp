@@ -105,21 +105,29 @@ namespace WebApiServer.Controllers
                 var validatedToken = _jwtService.Verify(jwtToken);
                 var userId = int.Parse(validatedToken.Issuer);
 
-                var likes = _unitOfWork.LikeRepository.GetItems().Where(l => l.PostId.Value == id);
-
-                foreach(var item in likes)
+                var likes = _unitOfWork.LikeRepository.GetItems().Where(l => l.PostId == id);
+                if(likes != null)
                 {
-                    item.PostId = null;
-                    _unitOfWork.LikeRepository.UpdateElement(item);
-                    _unitOfWork.SaveChanges();
+                    foreach (var item in likes)
+                    {
+                        item.PostId = null;
+                        item.UserId = null;
+                        _unitOfWork.LikeRepository.DeleteElement(item.LikeId);
+                        _unitOfWork.SaveChanges();
+                    }
                 }
 
-                var comments = _unitOfWork.CommentRepository.GetItems().Where(c => c.PostId.Value == id);
-                foreach(var item in comments)
+                var comments = _unitOfWork.CommentRepository.GetItems().Where(c => c.PostId == id).ToList();
+                if(comments != null)
                 {
-                    item.PostId = null;
-                    _unitOfWork.CommentRepository.UpdateElement(item);
-                    _unitOfWork.SaveChanges();
+                    foreach (var item in comments)
+                    {
+                        item.PostId = null;
+                        item.UserId = null;
+                        _unitOfWork.CommentRepository.DeleteElement(item.CommentId);
+                        _unitOfWork.SaveChanges();
+                    }
+
                 }
 
                 _unitOfWork.PostRepository.DeleteElement(id);
@@ -146,21 +154,28 @@ namespace WebApiServer.Controllers
 
                 var creatorPost = _unitOfWork.UserRepository.GetItem(_unitOfWork.PostRepository.GetItem(id).UserId.Value);
 
-                var likes = _unitOfWork.LikeRepository.GetItems().Where(l => l.PostId.Value == id);
-
-                foreach (var item in likes)
+                var likes = _unitOfWork.LikeRepository.GetItems().Where(l => l.PostId == id);
+                if(likes != null)
                 {
-                    item.PostId = null;
-                    _unitOfWork.LikeRepository.UpdateElement(item);
-                    _unitOfWork.SaveChanges();
+                    foreach (var item in likes)
+                    {
+                        item.PostId = null;
+                        item.UserId = null;
+                        _unitOfWork.LikeRepository.DeleteElement(item.LikeId);
+                        _unitOfWork.SaveChanges();
+                    }
                 }
 
                 var comments = _unitOfWork.CommentRepository.GetItems().Where(c => c.PostId == id);
-                foreach (var item in comments)
+                if(comments != null)
                 {
-                    item.PostId = null;
-                    _unitOfWork.CommentRepository.UpdateElement(item);
-                    _unitOfWork.SaveChanges();
+                    foreach (var item in comments)
+                    {
+                        item.PostId = null;
+                        item.UserId = null;
+                        _unitOfWork.CommentRepository.DeleteElement(item.CommentId);
+                        _unitOfWork.SaveChanges();
+                    }
                 }
 
                 _unitOfWork.PostRepository.DeleteElement(id);
@@ -210,11 +225,11 @@ namespace WebApiServer.Controllers
                 var validatedToken = _jwtService.Verify(jwtToken);
                 var userId = int.Parse(validatedToken.Issuer);
 
-                var like = _unitOfWork.LikeRepository.GetItems().FirstOrDefault(l => l.PostId.Value == id && l.UserId.Value == userId);
+                var like = _unitOfWork.LikeRepository.GetItems().FirstOrDefault(l => l.PostId == id && l.UserId  == userId);
 
                 if(like != null)
                 {
-                    _unitOfWork.LikeRepository.DeleteElement(_unitOfWork.LikeRepository.GetItems().FirstOrDefault(l=>l.PostId.Value == id && l.UserId.Value == userId).LikeId);
+                    _unitOfWork.LikeRepository.DeleteElement(_unitOfWork.LikeRepository.GetItems().FirstOrDefault(l=>l.PostId  == id && l.UserId  == userId).LikeId);
                     _unitOfWork.SaveChanges();
                 }
                 else
@@ -262,7 +277,7 @@ namespace WebApiServer.Controllers
                 var validatedToken = _jwtService.Verify(jwtToken);
                 var userId = int.Parse(validatedToken.Issuer);
 
-                var like = _unitOfWork.LikeRepository.GetItems().FirstOrDefault(l => l.PostId.Value == id && l.UserId.Value == userId);
+                var like = _unitOfWork.LikeRepository.GetItems().FirstOrDefault(l => l.PostId == id && l.UserId == userId);
 
                 if (like == null)
                     return Ok("not liked");

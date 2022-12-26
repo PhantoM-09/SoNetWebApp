@@ -7,7 +7,7 @@ const DeleteStrangePost = (props) => {
 
     const deletePost = (e) => {
         e.preventDefault();
-        axios.delete('http://localhost:5000/api/post/admin-delete-post/' + props.deletedPost.postId, { withCredentials: true })
+        axios.delete('https://localhost:7132/api/post/admin-delete-post/' + props.deletedPost.postId, { withCredentials: true })
             .then(response => {
                 props.setPosts(response.data);
                 props.onHide();

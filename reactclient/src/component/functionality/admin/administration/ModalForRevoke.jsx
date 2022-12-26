@@ -7,9 +7,9 @@ const ModalForRevoke = (props) => {
 
     const revokeUser = (e) => {
         e.preventDefault();
-        axios.delete('http://localhost:5000/api/admin/delete-admin/' +  props.actionUser.userId, { withCredentials: true })
+        axios.delete('https://localhost:7132/api/admin/delete-admin/' +  props.actionUser.userId, { withCredentials: true })
             .then(() => {
-                axios.get('http://localhost:5000/api/admin/get-admins/', { withCredentials: true })
+                axios.get('https://localhost:7132/api/admin/get-admins/', { withCredentials: true })
                     .then(response => {
                         props.setUsers(response.data);
                         props.onHide();

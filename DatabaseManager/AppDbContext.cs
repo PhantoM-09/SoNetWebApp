@@ -49,18 +49,51 @@ namespace DatabaseManager
             modelBuilder.Entity<Post>().HasMany(p => p.Likes).WithOne(l => l.Post).HasForeignKey(l => l.PostId).OnDelete(DeleteBehavior.NoAction);
 
             MD5 md5 = MD5.Create();
+            var userEmail = "admin@mail.ru";
             modelBuilder.Entity<User>().HasData(new User
             {
                 UserId = 1,
-                UserEmail = "admin@mail.ru",
+                UserEmail = userEmail,
                 UserPassword = Convert.ToBase64String(
                                         md5.ComputeHash(
                                             Encoding.UTF8.GetBytes("1122"))),
                 UserLastName = "Главный",
                 UserName = "Администратор",
-                UserSex = "мужской",
+                UserSex = "Мужской",
                 UserBirthDay = new DateTime(2001, 9, 26),
                 UserType = "MainAdmin"
+            });
+
+            Directory.CreateDirectory("wwwroot/" + Convert.ToBase64String(
+                                                           md5.ComputeHash(
+                                                               Encoding.UTF8.GetBytes(userEmail))));
+
+            modelBuilder.Entity<Address>().HasData(new Address
+            {
+                AddressId = 1,
+                AddressCountry = "Беларусь",
+                AddressCity = "Минск",
+            });
+
+            modelBuilder.Entity<Address>().HasData(new Address
+            {
+                AddressId = 2,
+                AddressCountry = "Беларусь",
+                AddressCity = "Брест",
+            });
+
+            modelBuilder.Entity<Address>().HasData(new Address
+            {
+                AddressId = 3,
+                AddressCountry = "Беларусь",
+                AddressCity = "Гродно",
+            });
+
+            modelBuilder.Entity<Address>().HasData(new Address
+            {
+                AddressId = 4,
+                AddressCountry = "Беларусь",
+                AddressCity = "Гомель",
             });
         }
     }

@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Context } from '../../..';
-import { FRIEND_ROUTE, LOGIN_ROUTE } from '../../../utils/consts';
+import { EDIT_ROUTE, FRIEND_ROUTE, LOGIN_ROUTE } from '../../../utils/consts';
 import Post from './post/Post';
 
 const Profile = observer(() => {
@@ -16,14 +16,14 @@ const Profile = observer(() => {
   const [profileUser, setProfileUser] = useState({ id: 0, lastName: '', name: '', birthDate: null, sex: '', country: null, city: null, profileImage: '', profileBackground: '', friendCount: 0, subscriberCount: 0 })
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/user/get-user/', { withCredentials: true })
+    axios.get('https://localhost:7132/api/user/get-user/', { withCredentials: true })
       .then(response => {
         var userInfo = response.data;
         user.setUserId(response.data.id);
         
-        axios.get('http://localhost:5000/api/file/get-profile-image/', { withCredentials: true })
+        axios.get('https://localhost:7132/api/file/get-profile-image/', { withCredentials: true })
           .then(imageResponse => {
-            setProfileUser({ ...profileUser, lastName: userInfo.lastName, name: userInfo.name, sex: userInfo.sex, birthDate: userInfo.birthDate, friendCount: userInfo.friendCount, subscriberCount: userInfo.subscriberCount, profileImage: 'http://localhost:5000/' + imageResponse.data.profileImage, profileBackground: 'http://localhost:5000/' + imageResponse.data.profileBackground });
+            setProfileUser({ ...profileUser, lastName: userInfo.lastName, name: userInfo.name, sex: userInfo.sex, birthDate: userInfo.birthDate, country: userInfo.country, city: userInfo.city, friendCount: userInfo.friendCount, subscriberCount: userInfo.subscriberCount, profileImage: 'https://localhost:7132/' + imageResponse.data.profileImage, profileBackground: 'https://localhost:7132/' + imageResponse.data.profileBackground });
             setIsStart(true);
           })
       })
@@ -80,7 +80,7 @@ const Profile = observer(() => {
                       <div className="row-md">
                         <div className="col-md">
                           <div style={{ padding: '5%' }}>
-                            <button type="button" className="btn btn-primary col-md-12" style={{ fontSize: '12pt', visibility: 'hidden'}} >Редактировать</button>
+                            <button type="button" className="btn btn-primary col-md-12" style={{ fontSize: '12pt'}} onClick={()=>navigate(EDIT_ROUTE)}>Редактировать</button>
                           </div>
                         </div>
                       </div>

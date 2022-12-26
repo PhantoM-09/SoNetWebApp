@@ -27,7 +27,7 @@ const Message = () => {
             if (connection === null) {
                 setClosed(false);
                 const newConnection = new HubConnectionBuilder()
-                    .withUrl('http://localhost:5000/chat')
+                    .withUrl('https://localhost:7132/chat')
                     .configureLogging(LogLevel.Information)
                     .build();
 
@@ -59,7 +59,7 @@ const Message = () => {
             setChatCompanion(companion);
             setStart(true);
 
-            axios.get('http://localhost:5000/api/message/get-messages/' + companion.userId, { withCredentials: true })
+            axios.get('https://localhost:7132/api/message/get-messages/' + companion.userId, { withCredentials: true })
                 .then(response => {
                     setMessages(response.data)
                 })

@@ -10,9 +10,9 @@ const ModalForDelete = (props) => {
         var formData = new FormData();
         formData.append("userId", props.actionUser.userId);
 
-        axios.post('http://localhost:5000/api/user/delete-user/', formData, { withCredentials: true })
+        axios.post('https://localhost:7132/api/user/delete-user/', formData, { withCredentials: true })
             .then(() => {
-                axios.get('http://localhost:5000/api/block/get-noblock-users/', { withCredentials: true })
+                axios.get('https://localhost:7132/api/block/get-noblock-users/', { withCredentials: true })
                     .then(response => {
                         props.setUsers(response.data);
                         props.onHide();

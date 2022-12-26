@@ -56,7 +56,7 @@ namespace WebApiServer.Utils.Chat.Hubs
         {
             _connection[Context.ConnectionId] = userConnection;
 
-            string groupName = groupName = userConnection.CompanionId + userConnection.UserId; 
+            string groupName = userConnection.CompanionId + userConnection.UserId; 
 
             var existingGroup = _unitOfWork.MessageRepository.GetItems().FirstOrDefault(m => m.MessageGroupName == groupName);
             if(existingGroup == null)

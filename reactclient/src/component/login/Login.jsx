@@ -77,7 +77,7 @@ const LoginForm = observer(() => {
         userData.append("email", email);
         userData.append("password", password);
 
-        axios.post('http://localhost:5000/api/auth/login', userData, {withCredentials: true})
+        axios.post('https://localhost:7132/api/auth/login', userData, {withCredentials: true})
             .then(response => {
                 user.setAuth(true);
                 user.setUserType(response.data);

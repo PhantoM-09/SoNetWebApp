@@ -17,14 +17,14 @@ const UserChoice = (props) => {
 
         if(e.target.value.length === 0)
         {
-            axios.get('http://localhost:5000/api/friend/get-friends/', { withCredentials: true })
+            axios.get('https://localhost:7132/api/friend/get-friends/', { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
             })
         }
         else
         {
-            axios.get('http://localhost:5000/api/user/get-all-users/', { withCredentials: true })
+            axios.get('https://localhost:7132/api/user/get-all-users/', { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
             })
@@ -34,7 +34,7 @@ const UserChoice = (props) => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/friend/get-friends/', { withCredentials: true })
+        axios.get('https://localhost:7132/api/friend/get-friends/', { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
             })
@@ -67,7 +67,7 @@ const UserChoice = (props) => {
                     <div className="row-md" key={user.userId}>
                         <div className="row">
                             <div className="col-md-2">
-                                <img src={'http://localhost:5000/' + user.userProfileImage} style={{ cursor: 'pointer', borderRadius: 500, height: 60, width: 60, objectFit: 'cover', marginLeft: '40%', marginTop: '30%' }} onClick={e => joinChat(user)}/>
+                                <img src={'https://localhost:7132/' + user.userProfileImage} style={{ cursor: 'pointer', borderRadius: 500, height: 60, width: 60, objectFit: 'cover', marginLeft: '40%', marginTop: '30%' }} onClick={e => joinChat(user)}/>
                             </div>
                             <div className='col-md-8' style={{ fontSize: '12pt', marginLeft: '12%', marginTop: '1%' }}>
                                 <div className='row-md text-break'>

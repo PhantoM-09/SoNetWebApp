@@ -21,7 +21,7 @@ const StrangePost = (props) => {
 
     const loadComments = (post) =>{
 
-        axios.get('http://localhost:5000/api/comment/get-comments/' + post.postId, { withCredentials: true })
+        axios.get('https://localhost:7132/api/comment/get-comments/' + post.postId, { withCredentials: true })
             .then(response => {
                 setComments(response.data);
             })
@@ -31,7 +31,7 @@ const StrangePost = (props) => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/post/get-strange-posts/' + strangeUser.UserId, { withCredentials: true })
+        axios.get('https://localhost:7132/api/post/get-strange-posts/' + strangeUser.UserId, { withCredentials: true })
             .then(postResponse => {
                 setPosts(postResponse.data);
             })

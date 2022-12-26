@@ -87,5 +87,76 @@ namespace WebApiServer.Controllers
                 return Ok("Пользователь создан");
             }
         }
+
+        [Route("edit-images")]
+        [HttpPut]
+        public IActionResult EditPictures()
+        {
+            try
+            {
+                var jwtToken = Request.Cookies["jwt"];
+                var validatedToken = _jwtService.Verify(jwtToken);
+
+                var userId = int.Parse(validatedToken.Issuer);
+                var user = _unitOfWork.UserRepository.GetItem(userId);
+
+                var profileImage = Request.Form.Files["profileImage"];
+                var profileBackground = Request.Form.Files["profileBackground"];
+
+                if(profileImage != null)
+                {
+                    FileManager.LoadProfileImage(profileImage, user.UserEmail);
+
+                    var file = _unitOfWork.UFileRepository.GetItems().FirstOrDefault(f => f.UserId == user.UserId && string.Equals(f.UFileType, "Profile image"));
+                    if(file != null)
+                    {
+                        file.UFileName = profileImage.FileName;
+                        _unitOfWork.UFileRepository.UpdateElement(file);
+                    }
+                    else
+                    {
+                        UFile addFile = new UFile
+                        {
+                            UFileId = 0,
+                            UserId = user.UserId,
+                            UFileName = profileImage.FileName,
+                            UFileType = "Profile image"
+                        };
+                        _unitOfWork.UFileRepository.AddElement(addFile);
+                    }
+                    _unitOfWork.SaveChanges();
+                }
+
+                if (profileBackground != null)
+                {
+                    FileManager.LoadProfileImage(profileBackground, user.UserEmail);
+
+                    var file = _unitOfWork.UFileRepository.GetItems().FirstOrDefault(f => f.UserId == user.UserId && string.Equals(f.UFileType, "Profile background"));
+                    if (file != null)
+                    {
+                        file.UFileName = profileBackground.FileName;
+                        _unitOfWork.UFileRepository.UpdateElement(file);
+                    }
+                    else
+                    {
+                        UFile addFile = new UFile
+                        {
+                            UFileId = 0,
+                            UserId = user.UserId,
+                            UFileName = profileBackground.FileName,
+                            UFileType = "Profile background"
+                        };
+                        _unitOfWork.UFileRepository.AddElement(addFile);
+                    }
+                    _unitOfWork.SaveChanges();
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new { message = "Вы не авторизованы" });
+            }
+        }
     }
 }

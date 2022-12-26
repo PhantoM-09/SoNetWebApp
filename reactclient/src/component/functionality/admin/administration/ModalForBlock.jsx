@@ -64,7 +64,7 @@ const ModalForBlock = (props) => {
             Users: null
         }
 
-        axios.post('http://localhost:5000/api/block/add-user/' + props.actionUser.userId, block, {withCredentials: true})
+        axios.post('https://localhost:7132/api/block/add-user/' + props.actionUser.userId, block, {withCredentials: true})
         .then(response => {
             props.setUsers(response.data);
             props.onHide();
@@ -85,7 +85,7 @@ const ModalForBlock = (props) => {
                     </div>
                     <div className="row-md">
                         <div className="col-md-1 d-inline-block">
-                            <img src={'http://localhost:5000/' + props.actionUser.userProfileImage} style={{ borderRadius: 500, height: 80, width: 80, objectFit: 'cover', marginLeft: '0%', marginTop: '30%' }} />
+                            <img src={'https://localhost:7132/' + props.actionUser.userProfileImage} style={{ borderRadius: 500, height: 80, width: 80, objectFit: 'cover', marginLeft: '0%', marginTop: '30%' }} />
                         </div>
                         <div className='col-md d-inline-block' style={{ fontSize: '16pt', marginLeft: '4%' }}>
                             <div className='col-md'>

@@ -23,7 +23,7 @@ const Post = (props) => {
 
     const loadComments = (post) =>{
 
-        axios.get('http://localhost:5000/api/comment/get-comments/' + post.postId, { withCredentials: true })
+        axios.get('https://localhost:7132/api/comment/get-comments/' + post.postId, { withCredentials: true })
             .then(response => {
                 setComments(response.data);
             })
@@ -33,7 +33,7 @@ const Post = (props) => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/post/get-posts/', { withCredentials: true })
+        axios.get('https://localhost:7132/api/post/get-posts/', { withCredentials: true })
             .then(postResponse => {
                 setPosts(postResponse.data);
             })
@@ -53,7 +53,7 @@ const Post = (props) => {
                 PostPublication: new Date()
             }
 
-            axios.post('http://localhost:5000/api/post/add-post/', post, { withCredentials: true })
+            axios.post('https://localhost:7132/api/post/add-post/', post, { withCredentials: true })
                 .then(response => {
                     setPosts(prevState => [response.data, ...prevState]);
                     setPostText("");

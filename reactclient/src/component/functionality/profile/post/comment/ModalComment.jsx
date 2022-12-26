@@ -19,7 +19,7 @@ const ModalComment = (props) => {
 
         var formData = new FormData();
         formData.append("text", commentText);
-        axios.post('http://localhost:5000/api/comment/add-comment/' + props.commentedPost.postId, formData, { withCredentials: true })
+        axios.post('https://localhost:7132/api/comment/add-comment/' + props.commentedPost.postId, formData, { withCredentials: true })
             .then(response => {
                 props.setComments(response.data);
                 setCommentText("");
@@ -29,7 +29,7 @@ const ModalComment = (props) => {
     const deleteComment = (deletedComment) => {
         var formData = new FormData();
         formData.append("postId", props.commentedPost.postId);
-        axios.post('http://localhost:5000/api/comment/delete-comment/' + deletedComment.commentId, formData, { withCredentials: true })
+        axios.post('https://localhost:7132/api/comment/delete-comment/' + deletedComment.commentId, formData, { withCredentials: true })
             .then(response => {
                 props.setComments(response.data);
             })
@@ -73,7 +73,7 @@ const ModalComment = (props) => {
                             <div className="col-md-12" style={{ border: '1px black solid', borderRadius: 8, fontSize: '12pt', marginTop: '2%' }}>
                                 <div className="row-md">
                                     <div className="col-md d-inline-block" >
-                                        <img style={{ borderRadius: 500, height: 60, width: 60, objectFit: 'cover', marginTop: '10%', marginLeft: '10%' }} src={'http://localhost:5000/' + comment.userProfileImage} />
+                                        <img style={{ borderRadius: 500, height: 60, width: 60, objectFit: 'cover', marginTop: '10%', marginLeft: '10%' }} src={'https://localhost:7132/' + comment.userProfileImage} />
                                     </div>
                                     <div className="col-md-10 d-inline-block">
                                         <div className="col-md-8" style={{ fontSize: '12pt', marginLeft: '3%' }}>
